@@ -13,6 +13,7 @@ from pathlib import Path
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--prod-dir", required=True); ap.add_argument("--test-target", required=True)
+ap.add_argument("--subset", action="store_true", help="test build is a --select subset: compare only nodes the test built")
 ap.add_argument("--connection"); ap.add_argument("--test-db")
 a = ap.parse_args()
 P, T = Path(a.prod_dir), Path(a.test_target)
@@ -30,6 +31,7 @@ tdb = next(iter(tm["sources"].values()))["database"]
 keep = ("model", "seed", "snapshot")
 pn = {k: v for k, v in pm["nodes"].items() if v["resource_type"] in keep}
 tn = {k: v for k, v in tm["nodes"].items() if v["resource_type"] in keep}
+if a.subset: pn = {k: v for k, v in pn.items() if k in tn}
 for k in sorted(set(pn) ^ set(tn)): bad.append(f"node only in {'prod' if k in pn else 'test'}: {k}")
 same_sql = 0
 for k in sorted(set(pn) & set(tn)):
@@ -40,9 +42,10 @@ for k in sorted(set(pn) & set(tn)):
     if norm(pn[k].get("compiled_code"), pdb, tdb) == norm(tn[k].get("compiled_code"), pdb, tdb): same_sql += 1
     else: bad.append(f"compiled SQL differs: {k}")
 count = lambda m: len([k for k, v in m["nodes"].items() if v["resource_type"] == "test"])
-if count(pm) != count(tm): bad.append(f"test count differs: prod={count(pm)} test={count(tm)}")
+if not a.subset and count(pm) != count(tm): bad.append(f"test count differs: prod={count(pm)} test={count(tm)}")
 status = lambda d: {r["unique_id"]: r["status"] for r in load(d, "run_results.json")["results"]}
 ps, ts = status(P), status(T)
+if a.subset: ps = {k: v for k, v in ps.items() if k in ts}
 for k in sorted(set(ps) ^ set(ts)): bad.append(f"result only in {'prod' if k in ps else 'test'}: {k}")
 for k in sorted(set(ps) & set(ts)):
     if ps[k] != ts[k]: bad.append(f"status differs {k}: prod={ps[k]} test={ts[k]}")
@@ -59,6 +62,7 @@ if a.connection:
     cat = load(P, "catalog.json")["nodes"]
     checked = 0
     for k, n in cat.items():
+        if a.subset and k not in tm["nodes"]: continue
         name = n["metadata"]["name"].upper(); cols = {c.upper(): v["type"].upper() for c, v in n["columns"].items()}
         if name not in live: bad.append(f"object missing in test db: {name}"); continue
         checked += 1

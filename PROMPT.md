@@ -11,7 +11,10 @@ Set up the "Make your data AI ready with dbt and Snowflake" workshop environment
 2. Clone https://github.com/dbt-labs/snowflake_sko_hol_2026 next to this repo.
 3. Create a dbt profile named `industries_snowflake` for the same connection. Use the same database
    as step 1 for models, and a role that can create schemas.
-4. In the cloned project run `dbt deps`, `dbt source freshness`, then `dbt build`, in that order. These are the production job's steps.
+4. In the cloned project run `dbt deps`, then `dbt build --select +sv_hed_at_risk_students`. That builds only the
+   semantic view and the 3 models upstream of it, which is all the Snowflake half of the workshop needs.
+   (For the full production build, run `dbt source freshness` and plain `dbt build` instead.)
+   Do not create any functions. Attendees create ROUTE_STUDENT_ALERT themselves in the lab.
 5. Report each model, test, and the semantic view `sv_hed_at_risk_students` as pass or fail.
    Then run `select count(*) from sv_higher_education.vw_hed_student_success_kpi`.
 
