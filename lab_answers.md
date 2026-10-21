@@ -262,9 +262,9 @@ Which majors have the most critical-risk students?
 
 Click **Create**.
 
-## Part 2: Test set with known answers {#part-2-tests}
+### Test it {#part-2-tests}
 
-Check your agent against these. Answers come from the lab data, so they're the same for everyone.
+Every agent needs testing before anyone trusts it. Ask yours these and compare. The answers come from the lab data, so they're the same for everyone.
 
 | Question | Known answer |
 |---|---|
