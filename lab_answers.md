@@ -158,7 +158,7 @@ SELECT sv_higher_education.ROUTE_STUDENT_ALERT('STU_202400075');  -- NOTIFY_ADVI
 
 ## Part 2: Create the agent {#part-2-agent}
 
-In Snowsight: **AI & ML → Agents → + Agent**.
+In Snowsight: **AI & ML → Agent Studio → Create Agent**.
 
 When it asks where to create the agent, pick your lab database and the `SV_HIGHER_EDUCATION` schema.
 
