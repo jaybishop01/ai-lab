@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Lab Setup</title>
+<style>
+  :root { --bg:#ffffff; --fg:#14181f; --muted:#5b6472; --card:#f5f7fa; --line:#dfe3ea; --accent:#ff694a; --ok:#1f8a4c; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0f1217; --fg:#e8ebf0; --muted:#9aa3b2; --card:#181c23; --line:#2a303a; --accent:#ff7a5c; --ok:#4cc38a; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:40px 16px 64px; }
+  h1 { font-size:28px; line-height:1.2; margin:0 0 6px; }
+  .sub { color:var(--muted); margin:0 0 28px; }
+  h2 { font-size:18px; margin:32px 0 10px; }
+  ol { padding-left:22px; } li { margin:6px 0; }
+  .copy { display:flex; gap:12px; align-items:center; flex-wrap:wrap; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin:8px 0 4px; }
+  button { font:600 17px/1 inherit; font-family:inherit; background:var(--accent); color:#fff; border:0; border-radius:10px; padding:14px 22px; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:wait; }
+  #status { color:var(--muted); font-size:14px; } #status.ok { color:var(--ok); font-weight:600; }
+  pre { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; overflow-x:auto; font-size:13.5px; }
+  code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+  a { color:var(--accent); }
+  .small { color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Make your data AI ready with dbt and Snowflake</h1>
+  <p class="sub">Snowflake lab setup · about 2 minutes</p>
+
+  <h2>1. Copy the setup SQL</h2>
+  <div class="copy">
+    <button id="copyBtn" disabled>Loading…</button>
+    <span id="status">Fetching setup file…</span>
+  </div>
+  <p class="small">Button not working? <a href="bootstrap.sql" download>Download bootstrap.sql</a> and open it, or <a href="https://github.com/jaybishop01/ai-lab/blob/main/bootstrap.sql">view it on GitHub</a> → Raw → select all.</p>
+
+  <h2>2. Run it in Snowflake</h2>
+  <ol>
+    <li>In your Snowflake lab account, open <b>Projects → Worksheets → + → SQL Worksheet</b>.</li>
+    <li>At the top of the worksheet, use the <b>context selector</b> to pick <b>your lab database</b>.</li>
+    <li>Paste, then click the <b>▶ dropdown → Run All</b>. Wait about a minute.</li>
+  </ol>
+
+  <h2>3. Check it worked</h2>
+<pre><code>select count(*) from INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;             -- 750
+show semantic views in schema sv_higher_education;                        -- SV_HED_AT_RISK_STUDENTS
+select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;  -- at-risk students</code></pre>
+
+  <h2>Fell behind?</h2>
+  <ul>
+    <li><b>Re-running is safe.</b> Paste and Run All again.</li>
+    <li><b>First result is NULL:</b> no database selected. Pick one in the context selector.</li>
+    <li><b>“Insufficient privileges” or the semantic view fails:</b> raise your hand.</li>
+  </ul>
+  <p class="small">Full instructions and how this file is built: <a href="https://github.com/jaybishop01/ai-lab">github.com/jaybishop01/ai-lab</a></p>
+</main>
+<script>
+  const btn = document.getElementById('copyBtn'), status = document.getElementById('status');
+  let sql = '';
+  fetch('bootstrap.sql').then(r => { if (!r.ok) throw new Error(r.status); return r.text(); }).then(t => {
+    sql = t; btn.disabled = false; btn.textContent = 'Copy setup SQL';
+    status.textContent = Math.round(t.length / 1024) + ' KB ready';
+  }).catch(() => { btn.textContent = 'Unavailable'; status.textContent = 'Use the download link below.'; });
+  btn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(sql); }
+    catch { const ta = document.createElement('textarea'); ta.value = sql; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+    status.textContent = 'Copied. Now paste it into a Snowsight worksheet.'; status.className = 'ok';
+    btn.textContent = 'Copied ✓';
+  });
+</script>
+</body>
+</html>
