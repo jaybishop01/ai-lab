@@ -70,82 +70,82 @@ CREATE OR REPLACE FUNCTION sv_higher_education.ROUTE_STUDENT_ALERT("STUDENT_ID_I
 RETURNS OBJECT
 LANGUAGE SQL
 COMMENT='Prepares a student retention alert payload for routing to academic staff. Returns student risk data with routing recommendation based on severity. Used by Cortex Agent for alert activation.'
-AS '
+AS $$
 SELECT OBJECT_CONSTRUCT(
     -- Student identification
-    ''student_id'', s.STUDENT_ID,
-    ''major_code'', s.MAJOR_CODE,
-    ''advisor_id'', s.ADVISOR_ID,
-    ''academic_standing'', s.ACADEMIC_STANDING,
+    'student_id', s.STUDENT_ID,
+    'major_code', s.MAJOR_CODE,
+    'advisor_id', s.ADVISOR_ID,
+    'academic_standing', s.ACADEMIC_STANDING,
 
     -- Risk assessment
-    ''overall_risk_assessment'', s.OVERALL_RISK_ASSESSMENT,
-    ''at_risk_flag'', s.AT_RISK_FLAG,
+    'overall_risk_assessment', s.OVERALL_RISK_ASSESSMENT,
+    'at_risk_flag', s.AT_RISK_FLAG,
 
     -- Academic metrics
-    ''current_gpa'', s.CURRENT_GPA,
-    ''gpa_risk_level'', s.GPA_RISK_LEVEL,
-    ''course_completion_rate'', s.COURSE_COMPLETION_RATE,
-    ''completion_risk_level'', s.COMPLETION_RISK_LEVEL,
+    'current_gpa', s.CURRENT_GPA,
+    'gpa_risk_level', s.GPA_RISK_LEVEL,
+    'course_completion_rate', s.COURSE_COMPLETION_RATE,
+    'completion_risk_level', s.COMPLETION_RISK_LEVEL,
 
     -- Engagement metrics
-    ''engagement_score'', s.ENGAGEMENT_SCORE,
-    ''engagement_risk_level'', s.ENGAGEMENT_RISK_LEVEL,
-    ''days_since_last_login'', s.DAYS_SINCE_LAST_LOGIN,
-    ''login_recency_risk_level'', s.LOGIN_RECENCY_RISK_LEVEL,
+    'engagement_score', s.ENGAGEMENT_SCORE,
+    'engagement_risk_level', s.ENGAGEMENT_RISK_LEVEL,
+    'days_since_last_login', s.DAYS_SINCE_LAST_LOGIN,
+    'login_recency_risk_level', s.LOGIN_RECENCY_RISK_LEVEL,
 
     -- Activity metrics
-    ''total_course_views'', s.TOTAL_COURSE_VIEWS,
-    ''assignment_submissions'', s.ASSIGNMENT_SUBMISSIONS,
-    ''discussion_posts'', s.DISCUSSION_POSTS,
+    'total_course_views', s.TOTAL_COURSE_VIEWS,
+    'assignment_submissions', s.ASSIGNMENT_SUBMISSIONS,
+    'discussion_posts', s.DISCUSSION_POSTS,
 
     -- Financial & intervention
-    ''financial_aid_amount'', s.FINANCIAL_AID_AMOUNT,
-    ''financial_aid_category'', s.FINANCIAL_AID_CATEGORY,
-    ''intervention_count'', s.INTERVENTION_COUNT,
-    ''intervention_category'', s.INTERVENTION_CATEGORY,
-    ''plagiarism_incidents'', s.PLAGIARISM_INCIDENTS,
-    ''writing_quality_score'', s.WRITING_QUALITY_SCORE,
+    'financial_aid_amount', s.FINANCIAL_AID_AMOUNT,
+    'financial_aid_category', s.FINANCIAL_AID_CATEGORY,
+    'intervention_count', s.INTERVENTION_COUNT,
+    'intervention_category', s.INTERVENTION_CATEGORY,
+    'plagiarism_incidents', s.PLAGIARISM_INCIDENTS,
+    'writing_quality_score', s.WRITING_QUALITY_SCORE,
 
     -- Pre-generated recommendations
-    ''recommended_action'', s.RECOMMENDED_ACTION,
+    'recommended_action', s.RECOMMENDED_ACTION,
 
     -- ROUTING DECISION LOGIC
-    ''routing_recommendation'',
+    'routing_recommendation',
         CASE
-            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' THEN ''NOTIFY_DEAN''
-            WHEN s.CURRENT_GPA < 2.0 THEN ''NOTIFY_DEAN''
-            WHEN (s.GPA_RISK_LEVEL = ''Critical'' AND s.COMPLETION_RISK_LEVEL = ''Critical'') THEN ''NOTIFY_DEAN''
-            WHEN (s.GPA_RISK_LEVEL = ''Critical'' AND s.ENGAGEMENT_RISK_LEVEL = ''Critical'') THEN ''NOTIFY_DEAN''
-            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%High%'' THEN ''NOTIFY_DEPT_CHAIR''
-            WHEN s.GPA_RISK_LEVEL = ''Critical'' OR s.COMPLETION_RISK_LEVEL = ''Critical'' THEN ''NOTIFY_DEPT_CHAIR''
-            WHEN s.ENGAGEMENT_RISK_LEVEL = ''Critical'' OR s.LOGIN_RECENCY_RISK_LEVEL = ''Critical'' THEN ''NOTIFY_DEPT_CHAIR''
-            WHEN s.DAYS_SINCE_LAST_LOGIN > 21 THEN ''NOTIFY_DEPT_CHAIR''
-            WHEN s.ACADEMIC_STANDING IN (''Probationary Status'', ''Academic Probation'', ''Academic Warning'', ''Warning Status'') THEN ''NOTIFY_DEPT_CHAIR''
-            ELSE ''NOTIFY_ADVISOR''
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE '%Critical%' THEN 'NOTIFY_DEAN'
+            WHEN s.CURRENT_GPA < 2.0 THEN 'NOTIFY_DEAN'
+            WHEN (s.GPA_RISK_LEVEL = 'Critical' AND s.COMPLETION_RISK_LEVEL = 'Critical') THEN 'NOTIFY_DEAN'
+            WHEN (s.GPA_RISK_LEVEL = 'Critical' AND s.ENGAGEMENT_RISK_LEVEL = 'Critical') THEN 'NOTIFY_DEAN'
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE '%High%' THEN 'NOTIFY_DEPT_CHAIR'
+            WHEN s.GPA_RISK_LEVEL = 'Critical' OR s.COMPLETION_RISK_LEVEL = 'Critical' THEN 'NOTIFY_DEPT_CHAIR'
+            WHEN s.ENGAGEMENT_RISK_LEVEL = 'Critical' OR s.LOGIN_RECENCY_RISK_LEVEL = 'Critical' THEN 'NOTIFY_DEPT_CHAIR'
+            WHEN s.DAYS_SINCE_LAST_LOGIN > 21 THEN 'NOTIFY_DEPT_CHAIR'
+            WHEN s.ACADEMIC_STANDING IN ('Probationary Status', 'Academic Probation', 'Academic Warning', 'Warning Status') THEN 'NOTIFY_DEPT_CHAIR'
+            ELSE 'NOTIFY_ADVISOR'
         END,
 
-    ''escalation_minutes'',
+    'escalation_minutes',
         CASE
-            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR s.CURRENT_GPA < 2.0 THEN 10
-            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%High%'' OR s.GPA_RISK_LEVEL = ''Critical'' THEN 15
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE '%Critical%' OR s.CURRENT_GPA < 2.0 THEN 10
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE '%High%' OR s.GPA_RISK_LEVEL = 'Critical' THEN 15
             ELSE 30
         END,
 
-    ''priority_level'',
+    'priority_level',
         CASE
-            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR s.CURRENT_GPA < 2.0 THEN ''Critical''
-            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%High%'' OR s.GPA_RISK_LEVEL = ''Critical'' THEN ''High''
-            ELSE ''Medium''
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE '%Critical%' OR s.CURRENT_GPA < 2.0 THEN 'Critical'
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE '%High%' OR s.GPA_RISK_LEVEL = 'Critical' THEN 'High'
+            ELSE 'Medium'
         END,
 
-    ''alert_timestamp'', CURRENT_TIMESTAMP(),
-    ''alert_date'', TO_CHAR(CURRENT_DATE(), ''YYYY-MM-DD''),
-    ''status'', ''ALERT_READY''
+    'alert_timestamp', CURRENT_TIMESTAMP(),
+    'alert_date', TO_CHAR(CURRENT_DATE(), 'YYYY-MM-DD'),
+    'status', 'ALERT_READY'
 )
 FROM sv_higher_education.vw_hed_retention_risk_analysis s
 WHERE s.STUDENT_ID = student_id_input
-';
+$$;
 ```
 
 Test it:
