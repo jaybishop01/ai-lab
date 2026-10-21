@@ -37,6 +37,12 @@
 <p class="small"><a href="./">← Lab setup</a></p>
 <h1>Answers: Make your data AI ready with dbt and Snowflake</h1>
 <p>The escape hatch. Try the hints on the slides first. Come here when you're stuck or want to check your work.</p>
+<h2 id="part-1-catalog">Part 1: Explore the catalog</h2>
+<p><b>Done when:</b> you can trace the semantic view back to raw data and say which signals decide a student's risk.</p>
+<p><b>The lineage.</b> <code>HED_RECORDS</code> (source) → <code>stg_hed__students</code> → <code>int_hed__risk_levels</code> → <code>vw_hed_retention_risk_analysis</code> → <code>sv_hed_at_risk_students</code> (semantic view).</p>
+<p><b>The risk score.</b> <code>int_hed__risk_levels</code> scores four signals: GPA, course completion, engagement, and login recency. Overall risk is the worst of the four. If any one is Critical, the student is Critical. So a student with a 3.9 GPA who hasn't logged in for 15+ days is still Critical.</p>
+<p><b>What's tested.</b> <code>stg_hed__students</code>, the intermediate models, and the marts have tests. The four <code>dq_hed__*</code> models and the semantic view model have none. That's your target for the Wizard step.</p>
+<p><b>Stretch.</b> In column-level lineage, <code>OVERALL_RISK_ASSESSMENT</code> traces back to <code>CURRENT_GPA</code>, <code>COURSE_COMPLETION_RATE</code>, <code>ENGAGEMENT_SCORE</code>, and <code>LAST_LOGIN_DATE</code> in <code>HED_RECORDS</code>.</p>
 <h2 id="part-1-wizard">Part 1: dbt Wizard</h2>
 <p><b>Done when:</b> you can explain the project in 2-3 sentences, one model has a new description, at least 2 new tests pass, and <code>dbt build</code> is green.</p>
 <p><b>The project in 3 sentences.</b> Raw student records land in <code>HED_RECORDS</code> (synced by Fivetran). <code>stg_hed__students</code> cleans them; two intermediate models score risk and engagement; five marts serve KPIs, retention risk, engagement, program performance, and data quality. <code>sv_hed_at_risk_students</code> turns the retention mart into a Snowflake semantic view that Cortex Analyst can query.</p>

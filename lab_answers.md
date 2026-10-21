@@ -2,6 +2,18 @@
 
 The escape hatch. Try the hints on the slides first. Come here when you're stuck or want to check your work.
 
+## Part 1: Explore the catalog {#part-1-catalog}
+
+**Done when:** you can trace the semantic view back to raw data and say which signals decide a student's risk.
+
+**The lineage.** `HED_RECORDS` (source) → `stg_hed__students` → `int_hed__risk_levels` → `vw_hed_retention_risk_analysis` → `sv_hed_at_risk_students` (semantic view).
+
+**The risk score.** `int_hed__risk_levels` scores four signals: GPA, course completion, engagement, and login recency. Overall risk is the worst of the four. If any one is Critical, the student is Critical. So a student with a 3.9 GPA who hasn't logged in for 15+ days is still Critical.
+
+**What's tested.** `stg_hed__students`, the intermediate models, and the marts have tests. The four `dq_hed__*` models and the semantic view model have none. That's your target for the Wizard step.
+
+**Stretch.** In column-level lineage, `OVERALL_RISK_ASSESSMENT` traces back to `CURRENT_GPA`, `COURSE_COMPLETION_RATE`, `ENGAGEMENT_SCORE`, and `LAST_LOGIN_DATE` in `HED_RECORDS`.
+
 ## Part 1: dbt Wizard {#part-1-wizard}
 
 **Done when:** you can explain the project in 2-3 sentences, one model has a new description, at least 2 new tests pass, and `dbt build` is green.
