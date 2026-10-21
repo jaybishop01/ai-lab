@@ -47,6 +47,7 @@ The dbt platform Catalog still shows the prod source schema, since that lives in
 | File | Purpose |
 |---|---|
 | `bootstrap.sql` | Generated. Do not hand-edit. |
+| `answers.html` | Lab answers page (escape hatch). Built from `lab_answers.md` by `scripts/build_answers_page.py` |
 | `scripts/generate_bootstrap.py` | Builds `bootstrap.sql` from the prod run's `manifest.json` (compiled SQL) and `catalog.json` (types, comments), plus `data/hed_records_prod.json` |
 | `data/hed_records_prod.json` | The 750 prod source rows, exported from the production Snowflake through a read-only dbt platform run |
 | `scripts/verify_bootstrap.py` | Checks a bootstrapped database against the prod catalog: types, columns, comments, row counts, views run, semantic view exists |

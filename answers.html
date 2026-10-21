@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Lab Answers</title>
+<style>
+  :root { --bg:#ffffff; --fg:#14181f; --muted:#5b6472; --card:#f5f7fa; --line:#dfe3ea; --accent:#ff694a; --ok:#1f8a4c; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0f1217; --fg:#e8ebf0; --muted:#9aa3b2; --card:#181c23; --line:#2a303a; --accent:#ff7a5c; --ok:#4cc38a; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:40px 16px 64px; }
+  h1 { font-size:28px; line-height:1.2; margin:0 0 6px; }
+  .sub { color:var(--muted); margin:0 0 28px; }
+  h2 { font-size:18px; margin:32px 0 10px; }
+  ol { padding-left:22px; } li { margin:6px 0; }
+  .copy { display:flex; gap:12px; align-items:center; flex-wrap:wrap; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin:8px 0 4px; }
+  button { font:600 17px/1 inherit; font-family:inherit; background:var(--accent); color:#fff; border:0; border-radius:10px; padding:14px 22px; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:wait; }
+  #status { color:var(--muted); font-size:14px; } #status.ok { color:var(--ok); font-weight:600; }
+  pre { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; overflow-x:auto; font-size:13.5px; }
+  code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+  a { color:var(--accent); }
+  .checks { position:relative; }
+  button.mini { position:absolute; top:8px; right:8px; font-size:13px; padding:7px 12px; border-radius:8px; }
+  .small { color:var(--muted); font-size:14px; }
+  .code { position:relative; }
+  table { border-collapse:collapse; width:100%; margin:8px 0 16px; font-size:15px; }
+  th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--card); }
+  .note { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:8px; padding:10px 14px; }
+  h2 { padding-top:8px; }
+</style>
+</head>
+<body>
+<main>
+<p class="small"><a href="./">← Lab setup</a></p>
+<h1>Answers: Make your data AI ready with dbt and Snowflake</h1>
+<p>The escape hatch. Try the hints on the slides first. Come here when you're stuck or want to check your work.</p>
+<h2 id="part-1-wizard">Part 1: dbt Wizard</h2>
+<p><b>Done when:</b> you can explain the project in 2-3 sentences, one model has a new description, at least 2 new tests pass, and <code>dbt build</code> is green.</p>
+<p><b>The project in 3 sentences.</b> Raw student records land in <code>HED_RECORDS</code> (synced by Fivetran). <code>stg_hed__students</code> cleans them; two intermediate models score risk and engagement; five marts serve KPIs, retention risk, engagement, program performance, and data quality. <code>sv_hed_at_risk_students</code> turns the retention mart into a Snowflake semantic view that Cortex Analyst can query.</p>
+<p><b>Where the gaps are.</b> The four <code>dq_hed__*</code> models have no tests. The <code>sv_hed_at_risk_students</code> model has no description.</p>
+<p><b>Example tests.</b> In <code>models/hed/data_quality/_data_quality__schema.yml</code>, find <code>dq_hed__validity</code>. Its columns are already listed with descriptions. Add a <code>data_tests:</code> block under <code>quality_dimension</code> and <code>overall_validity_score</code>, so they look like this:</p>
+<div class="code"><button class="mini" data-target="c1">Copy</button><pre><code id="c1">      - name: quality_dimension
+        description: "Quality dimension identifier (Data Validity)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['Data Validity']
+      - name: overall_validity_score
+        description: "..."   # keep the existing description
+        data_tests:
+          - not_null</code></pre></div>
+<p><b>Example description.</b> Create <code>models/hed/semantic_models/_semantic_models.yml</code>:</p>
+<div class="code"><button class="mini" data-target="c2">Copy</button><pre><code id="c2">version: 2
+models:
+  - name: sv_hed_at_risk_students
+    description: &gt;
+      Snowflake semantic view over vw_hed_retention_risk_analysis. Gives Cortex Analyst
+      the facts, dimensions, and filters it needs to answer plain-English questions
+      about at-risk students.</code></pre></div>
+<p>Then run <code>dbt build --select data_quality sv_hed_at_risk_students</code>.</p>
+<p><b>Stretch.</b> A test that fails when data goes bad: <code>invalid_gpa_records</code> should always be 0. Add this under the existing <code>invalid_gpa_records</code> column:</p>
+<div class="code"><button class="mini" data-target="c3">Copy</button><pre><code id="c3">      - name: invalid_gpa_records
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 0</code></pre></div>
+<h2 id="part-2-setup">Part 2: Load the data</h2>
+<ol><li>Log in to your lab Snowflake account. Open <b>Projects → Worksheets → +</b> to start a SQL worksheet.</li><li>In the worksheet's context menu, pick your lab database.</li><li>Copy <code>bootstrap.sql</code> from <b><a href="https://jaybishop01.github.io/ai-lab/">https://jaybishop01.github.io/ai-lab/</a></b>, paste it, and click <b>Run All</b>.</li><li>Check your data:</li></ol>
+<div class="code"><button class="mini" data-target="c4">Copy</button><pre><code id="c4">SELECT COUNT(*) FROM INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;                 -- 750
+SELECT COUNT(*) FROM sv_higher_education.vw_hed_retention_risk_analysis;      -- 257
+SHOW SEMANTIC VIEWS IN SCHEMA sv_higher_education;                            -- SV_HED_AT_RISK_STUDENTS</code></pre></div>
+<h2 id="part-2-function">Part 2: Custom agent function</h2>
+<p><code>ROUTE_STUDENT_ALERT</code> takes a student ID and returns that student's risk details plus who to notify: the Dean, the Department Chair, or the Advisor.</p>
+<div class="code"><button class="mini" data-target="c5">Copy</button><pre><code id="c5">CREATE OR REPLACE FUNCTION sv_higher_education.ROUTE_STUDENT_ALERT("STUDENT_ID_INPUT" VARCHAR)
+RETURNS OBJECT
+LANGUAGE SQL
+COMMENT='Prepares a student retention alert payload for routing to academic staff. Returns student risk data with routing recommendation based on severity. Used by Cortex Agent for alert activation.'
+AS '
+SELECT OBJECT_CONSTRUCT(
+    -- Student identification
+    ''student_id'', s.STUDENT_ID,
+    ''major_code'', s.MAJOR_CODE,
+    ''advisor_id'', s.ADVISOR_ID,
+    ''academic_standing'', s.ACADEMIC_STANDING,
+
+    -- Risk assessment
+    ''overall_risk_assessment'', s.OVERALL_RISK_ASSESSMENT,
+    ''at_risk_flag'', s.AT_RISK_FLAG,
+
+    -- Academic metrics
+    ''current_gpa'', s.CURRENT_GPA,
+    ''gpa_risk_level'', s.GPA_RISK_LEVEL,
+    ''course_completion_rate'', s.COURSE_COMPLETION_RATE,
+    ''completion_risk_level'', s.COMPLETION_RISK_LEVEL,
+
+    -- Engagement metrics
+    ''engagement_score'', s.ENGAGEMENT_SCORE,
+    ''engagement_risk_level'', s.ENGAGEMENT_RISK_LEVEL,
+    ''days_since_last_login'', s.DAYS_SINCE_LAST_LOGIN,
+    ''login_recency_risk_level'', s.LOGIN_RECENCY_RISK_LEVEL,
+
+    -- Activity metrics
+    ''total_course_views'', s.TOTAL_COURSE_VIEWS,
+    ''assignment_submissions'', s.ASSIGNMENT_SUBMISSIONS,
+    ''discussion_posts'', s.DISCUSSION_POSTS,
+
+    -- Financial &amp; intervention
+    ''financial_aid_amount'', s.FINANCIAL_AID_AMOUNT,
+    ''financial_aid_category'', s.FINANCIAL_AID_CATEGORY,
+    ''intervention_count'', s.INTERVENTION_COUNT,
+    ''intervention_category'', s.INTERVENTION_CATEGORY,
+    ''plagiarism_incidents'', s.PLAGIARISM_INCIDENTS,
+    ''writing_quality_score'', s.WRITING_QUALITY_SCORE,
+
+    -- Pre-generated recommendations
+    ''recommended_action'', s.RECOMMENDED_ACTION,
+
+    -- ROUTING DECISION LOGIC
+    ''routing_recommendation'',
+        CASE
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' THEN ''NOTIFY_DEAN''
+            WHEN s.CURRENT_GPA &lt; 2.0 THEN ''NOTIFY_DEAN''
+            WHEN (s.GPA_RISK_LEVEL = ''Critical'' AND s.COMPLETION_RISK_LEVEL = ''Critical'') THEN ''NOTIFY_DEAN''
+            WHEN (s.GPA_RISK_LEVEL = ''Critical'' AND s.ENGAGEMENT_RISK_LEVEL = ''Critical'') THEN ''NOTIFY_DEAN''
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%High%'' THEN ''NOTIFY_DEPT_CHAIR''
+            WHEN s.GPA_RISK_LEVEL = ''Critical'' OR s.COMPLETION_RISK_LEVEL = ''Critical'' THEN ''NOTIFY_DEPT_CHAIR''
+            WHEN s.ENGAGEMENT_RISK_LEVEL = ''Critical'' OR s.LOGIN_RECENCY_RISK_LEVEL = ''Critical'' THEN ''NOTIFY_DEPT_CHAIR''
+            WHEN s.DAYS_SINCE_LAST_LOGIN &gt; 21 THEN ''NOTIFY_DEPT_CHAIR''
+            WHEN s.ACADEMIC_STANDING IN (''Probationary Status'', ''Academic Probation'', ''Academic Warning'', ''Warning Status'') THEN ''NOTIFY_DEPT_CHAIR''
+            ELSE ''NOTIFY_ADVISOR''
+        END,
+
+    ''escalation_minutes'',
+        CASE
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR s.CURRENT_GPA &lt; 2.0 THEN 10
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%High%'' OR s.GPA_RISK_LEVEL = ''Critical'' THEN 15
+            ELSE 30
+        END,
+
+    ''priority_level'',
+        CASE
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR s.CURRENT_GPA &lt; 2.0 THEN ''Critical''
+            WHEN s.OVERALL_RISK_ASSESSMENT LIKE ''%High%'' OR s.GPA_RISK_LEVEL = ''Critical'' THEN ''High''
+            ELSE ''Medium''
+        END,
+
+    ''alert_timestamp'', CURRENT_TIMESTAMP(),
+    ''alert_date'', TO_CHAR(CURRENT_DATE(), ''YYYY-MM-DD''),
+    ''status'', ''ALERT_READY''
+)
+FROM sv_higher_education.vw_hed_retention_risk_analysis s
+WHERE s.STUDENT_ID = student_id_input
+';</code></pre></div>
+<p>Test it:</p>
+<div class="code"><button class="mini" data-target="c6">Copy</button><pre><code id="c6">SELECT sv_higher_education.ROUTE_STUDENT_ALERT('STU_202400421');  -- routing_recommendation: NOTIFY_DEAN
+SELECT sv_higher_education.ROUTE_STUDENT_ALERT('STU_202400015');  -- NOTIFY_DEPT_CHAIR
+SELECT sv_higher_education.ROUTE_STUDENT_ALERT('STU_202400075');  -- NOTIFY_ADVISOR</code></pre></div>
+<h2 id="part-2-agent">Part 2: Create the agent</h2>
+<p>In Snowsight: <b>AI &amp; ML → Agents → + Agent</b>.</p>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Agent name</td><td><code>RIDGELINE_STUDENT_SUCCESS_AGENT</code></td></tr><tr><td>Display name</td><td><code>Ridgeline Student Success Agent</code></td></tr><tr><td>Available in Snowflake Intelligence</td><td>On</td></tr></tbody></table>
+<p><b>Description</b></p>
+<div class="code"><button class="mini" data-target="c7">Copy</button><pre><code id="c7">Student retention agent for Ridgeline State's Student Success office. Answers plain-English questions about at-risk students and routes alerts to the Dean, Department Chair, or Advisor. Built on data modeled with dbt.</code></pre></div>
+<p><b>Orchestration instructions</b></p>
+<div class="code"><button class="mini" data-target="c8">Copy</button><pre><code id="c8">You are a Student Retention agent that helps academic staff identify and respond to at-risk students.
+
+TOOL SELECTION:
+1. For questions about student data, risk scores, academic performance, or statistics -&gt; use query_student_risk_data (Cortex Analyst)
+2. For routing an alert for a specific student -&gt; use route_student_alert (requires student_id)
+
+REASONING PROCESS:
+1. Understand if the user wants information (query) or action (alert)
+2. For queries: use query_student_risk_data to search student retention data
+3. For alerts: get the student_id first (ask if not provided), then use route_student_alert
+
+IMPORTANT:
+- Overall risk assessment values: Critical, High, Moderate, Low
+- GPA below 2.0 is the critical threshold
+- 21+ days inactive requires immediate intervention
+- Critical risk -&gt; routed to Dean (10-min escalation)
+- High risk -&gt; routed to Department Chair (15-min escalation)
+- Moderate or Low risk -&gt; routed to Academic Advisor (30-min escalation)
+- Always include student_id, major, advisor, and risk assessment when discussing students</code></pre></div>
+<p><b>Response instructions</b></p>
+<div class="code"><button class="mini" data-target="c9">Copy</button><pre><code id="c9">Tone: Professional and supportive, but urgent when discussing critical-risk students.
+
+Format:
+- Lead with the most important information (risk level, student count, priority)
+- Include specific numbers (GPA, engagement scores, counts)
+- For student details: always show Student ID, Major, Risk Assessment, GPA, Advisor
+
+Alert responses - when routing an alert, confirm:
+- Student ID and major
+- Routing destination (Dean, Department Chair, or Academic Advisor)
+- Key risk factors triggering the alert
+
+Never:
+- Skip confirming student_id before routing alerts
+- Provide academic or counseling advice beyond the data
+- Ignore critical risk indicators</code></pre></div>
+<p><b>Tool 1: Cortex Analyst</b></p>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Tool name</td><td><code>query_student_risk_data</code></td></tr><tr><td>Database</td><td>your lab database</td></tr><tr><td>Schema</td><td><code>SV_HIGHER_EDUCATION</code></td></tr><tr><td>Semantic view</td><td><code>SV_HED_AT_RISK_STUDENTS</code></td></tr></tbody></table>
+<div class="code"><button class="mini" data-target="c10">Copy</button><pre><code id="c10">Query student retention data, risk scores, academic performance, and statistics using natural language. Use this tool to answer questions about at-risk students, filter by major or risk level, calculate aggregate metrics, or analyze retention trends.</code></pre></div>
+<p><b>Tool 2: Function</b></p>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Tool name</td><td><code>route_student_alert</code></td></tr><tr><td>Resource type</td><td><code>function</code></td></tr><tr><td>Function</td><td><code>&lt;your lab database&gt;.SV_HIGHER_EDUCATION.ROUTE_STUDENT_ALERT(VARCHAR)</code></td></tr></tbody></table>
+<div class="code"><button class="mini" data-target="c11">Copy</button><pre><code id="c11">Use this tool to route a retention alert for a specific student. Requires a student_id (e.g., STU_202400421). Returns the student's details, risk assessment, recommended actions, and routing destination (NOTIFY_DEAN, NOTIFY_DEPT_CHAIR, or NOTIFY_ADVISOR). Use when the user asks to route an alert, send an alert, or notify someone about a specific student.</code></pre></div>
+<p><b>Example questions</b></p>
+<div class="code"><button class="mini" data-target="c12">Copy</button><pre><code id="c12">Which students have critical retention risk right now?
+Show me the top 10 highest risk students
+Find Engineering students with low GPA
+What's the average engagement score by major?
+Which students are inactive for more than 21 days?
+Summarize STU_202400421's risk factors
+How many students are on academic probation?
+Route an alert for STU_202400421
+What's the total financial aid at risk for critical students?
+Which majors have the most critical-risk students?</code></pre></div>
+<p>Click <b>Create</b>.</p>
+<h2 id="part-2-tests">Part 2: Test set with known answers</h2>
+<p>Check your agent against these. Answers come from the lab data, so they're the same for everyone.</p>
+<table><thead><tr><th>Question</th><th>Known answer</th></tr></thead><tbody><tr><td>How many students are at Critical risk?</td><td>132</td></tr><tr><td>How many students are at High risk?</td><td>95</td></tr><tr><td>How many students haven't logged in for more than 21 days?</td><td>12</td></tr><tr><td>How many students are on probation or warning?</td><td>77</td></tr><tr><td>Total financial aid for Critical-risk students?</td><td>about $1.63M ($1,627,934)</td></tr><tr><td>Which majors have the most Critical-risk students?</td><td>JOUR and NURS, 8 each</td></tr><tr><td>Route an alert for STU_202400421</td><td>Dean (Critical, GPA 1.01)</td></tr><tr><td>Route an alert for STU_202400015</td><td>Department Chair</td></tr><tr><td>Route an alert for STU_202400075</td><td>Advisor</td></tr></tbody></table>
+<p><b>Found a wrong answer?</b> Common fixes: add the term to the semantic view's synonyms or descriptions, add a rule to the orchestration instructions, or add a verified query. Change one thing, then ask again.</p>
+<p class="note small">Known answers are for <b>10/21/2026</b>. Risk tiers use days since last login, so counts drift a little each day after that.</p>
+</main>
+<script>
+  document.querySelectorAll('button.mini').forEach(b => b.addEventListener('click', async () => {
+    const text = document.getElementById(b.dataset.target).textContent;
+    try { await navigator.clipboard.writeText(text); }
+    catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+    b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy', 2000);
+  }));
+</script>
+</body>
+</html>
