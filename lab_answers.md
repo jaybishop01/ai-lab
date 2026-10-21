@@ -61,19 +61,6 @@ Then run `dbt build --select data_quality sv_hed_at_risk_students`.
               max_value: 0
 ```
 
-## Part 2: Load the data {#part-2-setup}
-
-1. Log in to your lab Snowflake account. Open **Projects → Worksheets → +** to start a SQL worksheet.
-2. In the worksheet's context menu, pick your lab database.
-3. Copy `bootstrap.sql` from **https://jaybishop01.github.io/ai-lab/**, paste it, and click **Run All**.
-4. Check your data:
-
-```sql
-SELECT COUNT(*) FROM INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;                 -- 750
-SELECT COUNT(*) FROM sv_higher_education.vw_hed_retention_risk_analysis;      -- 257
-SHOW SEMANTIC VIEWS IN SCHEMA sv_higher_education;                            -- SV_HED_AT_RISK_STUDENTS
-```
-
 ## Part 2: Custom agent function {#part-2-function}
 
 `ROUTE_STUDENT_ALERT` takes a student ID and returns that student's risk details plus who to notify: the Dean, the Department Chair, or the Advisor.

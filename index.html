@@ -38,9 +38,9 @@
 <main>
   <nav class="topnav"><a href="#dbt">1 · dbt platform</a><a href="#snowflake">2 · Snowflake</a><a class="answers" href="answers.html">Answers →</a></nav>
   <h1>Make your data AI ready with dbt and Snowflake</h1>
-  <p class="sub">Set up both accounts before we start building · about 10 minutes total</p>
+  <p class="sub">Set up both accounts before we start building · about 12 minutes total</p>
 
-  <h2 id="dbt">Part 1 · dbt platform account <span class="time">~5 min</span></h2>
+  <h2 id="dbt">Part 1 · dbt platform account <span class="time">~7 min</span></h2>
   <ol>
     <li>Open a <b>private / incognito</b> browser window. (If you're already logged in to dbt, signup can misbehave.)</li>
     <li>Go to <a href="https://workshops.us1.dbt.com/workshop">workshops.us1.dbt.com/workshop</a>.</li>
@@ -48,7 +48,14 @@
     <li>Enter the <b>passcode shown on the screen</b>, agree to the terms, and click <b>Complete registration</b>.</li>
     <li><b>Screenshot the login page</b> (your email and password), then click <b>Log In</b>.</li>
   </ol>
-  <p class="done"><b>You're set when:</b> you're in dbt platform and can open <b>Studio</b> on the workshop project.</p>
+  <h3>Run your first job <span class="time">~2 min</span></h3>
+  <ol>
+    <li>In dbt platform, go to <b>Orchestration → Jobs</b>.</li>
+    <li>Open the <b>Prod Job</b>.</li>
+    <li>Click <b>Run now</b> and wait for it to turn green (about 1 minute). Keep the default command.</li>
+  </ol>
+  <p class="small">Why: Catalog shows what the last production run built, so run this before you explore.</p>
+  <p class="done"><b>You're set when:</b> the job run shows <b>Success</b>.</p>
   <p class="small">Lost your login? Your email is usually <code>firstname.lastname@dbtlabsworkshop.com</code>. Ask a facilitator for the password or a reset.</p>
 
   <h2 id="snowflake">Part 2 · Snowflake lab data <span class="time">~5 min</span></h2>
