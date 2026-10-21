@@ -16,6 +16,7 @@ ap.add_argument("--artifacts", required=True)
 ap.add_argument("--rows", required=True)
 ap.add_argument("--seed-csv", required=True)
 ap.add_argument("--out", required=True)
+ap.add_argument("--rename", nargs="*", default=[], help="OLD=NEW schema renames, e.g. LUIS_LEON_HIGHER_EDUCATION=INDUSTRIES_HIGHER_EDUCATION")
 a = ap.parse_args()
 d = Path(a.artifacts)
 manifest = json.loads((d / "manifest.json").read_text())
@@ -24,7 +25,13 @@ data = json.loads(Path(a.rows).read_text())
 
 src = next(iter(manifest["sources"].values()))
 PROD_DB = src["database"]
-strip_db = lambda sql: re.sub(re.escape(PROD_DB) + r"\.", "", sql, flags=re.I)
+RENAMES = [kv.split("=", 1) for kv in a.rename]
+def rn(text):
+    """Apply schema renames (case-insensitive, whole identifier only)."""
+    for old, new in RENAMES:
+        text = re.sub(rf"(?<![A-Za-z0-9_]){re.escape(old)}(?![A-Za-z0-9_])", new, text, flags=re.I)
+    return text
+strip_db = lambda sql: rn(re.sub(re.escape(PROD_DB) + r"\.", "", sql, flags=re.I))
 q = lambda s: "'" + str(s).replace("\\", "\\\\").replace("'", "''") + "'"
 
 def scale_of(values):
@@ -58,6 +65,7 @@ by_name = {c.upper(): i for i, c in enumerate(data["columns"])}
 missing = [c["name"] for c in cols if c["name"].upper() not in by_name]
 assert not missing, f"rows file is missing columns: {missing}"
 colvals = lambda c: [r[by_name[c["name"].upper()]] for r in data["rows"]]
+src = {**src, "schema": rn(src["schema"])}
 out += [f"CREATE SCHEMA IF NOT EXISTS {src['schema']};",
         f"CREATE OR REPLACE TABLE {src['schema']}.{src['identifier']} (",
         ",\n".join(f"  {c['name']} {col_type(c['type'], colvals(c))}" for c in cols), ");"]
@@ -77,6 +85,7 @@ def visit(k):
     done.add(k); order.append(k)
 for k in sorted(nodes): visit(k)
 
+for k in order: nodes[k] = {**nodes[k], "schema": rn(nodes[k]["schema"])}
 schemas = sorted({nodes[k]["schema"] for k in order})
 out += [f"CREATE SCHEMA IF NOT EXISTS {s};" for s in schemas] + [""]
 for k in order:

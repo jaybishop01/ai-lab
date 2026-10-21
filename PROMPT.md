@@ -10,7 +10,7 @@ Set up the "Make your data AI ready with dbt and Snowflake" lab objects in this 
 2. Change the line `SET lab_db = 'SNOWFLAKE_SUMMIT_2026_HOL_DB';` to use my lab database: <YOUR_DATABASE>.
 3. Run every statement in the file, in order. Stop and show me the error if one fails.
 4. Then run these checks and show the results:
-   - `select count(*) from LUIS_LEON_HIGHER_EDUCATION.HED_RECORDS;`  (expect 750)
+   - `select count(*) from INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;`  (expect 750)
    - `show semantic views in schema sv_higher_education;`  (expect SV_HED_AT_RISK_STUDENTS)
    - `select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;`
 

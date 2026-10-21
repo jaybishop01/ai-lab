@@ -11,6 +11,7 @@ import snowflake.connector
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--connection", required=True); ap.add_argument("--db", required=True); ap.add_argument("--artifacts", required=True)
+ap.add_argument("--rename", nargs="*", default=[], help="OLD=NEW schema renames used when generating")
 a = ap.parse_args()
 pw = os.environ.get(f"SNOWFLAKE_CONNECTIONS_{a.connection.upper()}_PASSWORD")
 con = snowflake.connector.connect(connection_name=a.connection, **({"password": pw} if pw else {}))
@@ -26,9 +27,10 @@ for s, t, c, i, typ, cmt in q(f"select table_schema, table_name, column_name, or
                                f"from {a.db}.information_schema.columns where table_schema <> 'INFORMATION_SCHEMA'"):
     live_c.setdefault((s, t), {})[c] = (i, typ, cmt or "")
 
+renames = {o.upper(): nw.upper() for o, nw in (kv.split("=", 1) for kv in a.rename)}
 bad, checked = [], 0
 for uid, n in list(cat["nodes"].items()) + list(cat["sources"].items()):
-    md = n["metadata"]; key = (md["schema"].upper(), md["name"].upper())
+    md = n["metadata"]; key = (renames.get(md["schema"].upper(), md["schema"].upper()), md["name"].upper())
     if key not in live_t: bad.append(f"missing: {key}"); continue
     typ, cmt, rows = live_t[key]; checked += 1
     if typ != md["type"]: bad.append(f"type {key}: prod={md['type']} test={typ}")

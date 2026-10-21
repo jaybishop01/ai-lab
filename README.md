@@ -10,8 +10,17 @@ dbt project it mirrors: https://github.com/dbt-labs/snowflake_sko_hol_2026 (prod
 - **Snowsight worksheet:** open `bootstrap.sql`, change `SET lab_db = ...` to your database, Run All (about 1 minute).
 - **Cortex Code:** paste `PROMPT.md`.
 
-Objects land in `<lab_db>.LUIS_LEON_HIGHER_EDUCATION` (source), `<lab_db>.sv_higher_education`
-(models and semantic view), and `<lab_db>.prod_workshop_Jb_2d9662` (seed, unused by models). Names match prod.
+Objects land in `<lab_db>.INDUSTRIES_HIGHER_EDUCATION` (source), `<lab_db>.sv_higher_education`
+(models and semantic view), and `<lab_db>.WORKSHOP_SEED` (seed, unused by models).
+
+Two schemas are renamed from prod; everything else keeps prod's names:
+
+| Prod schema | Lab schema | Why |
+|---|---|---|
+| `LUIS_LEON_HIGHER_EDUCATION` | `INDUSTRIES_HIGHER_EDUCATION` | Personal name; this is the project's own default in `_hed__sources.yml` |
+| `prod_workshop_Jb_2d9662` | `WORKSHOP_SEED` | Per-attendee target schema from the prod run |
+
+The dbt platform Catalog still shows the prod source schema, since that lives in the Training Snowflake.
 
 ## How it's made
 | File | Purpose |
@@ -24,6 +33,14 @@ Objects land in `<lab_db>.LUIS_LEON_HIGHER_EDUCATION` (source), `<lab_db>.sv_hig
 | `scripts/compare_to_prod.py`, `compare_state.py` | Earlier dbt-build comparison tools |
 
 References are two-part (`schema.object`), so the `USE DATABASE` line decides where everything goes.
+
+## Regenerate
+```
+python3 scripts/generate_bootstrap.py --artifacts <run artifacts dir> --rows data/hed_records_prod.json \
+  --seed-csv hed_records.csv --out bootstrap.sql \
+  --rename LUIS_LEON_HIGHER_EDUCATION=INDUSTRIES_HIGHER_EDUCATION prod_workshop_Jb_2d9662=WORKSHOP_SEED
+```
+Pass the same `--rename` to `scripts/verify_bootstrap.py`.
 
 ## Known limits
 - The catalog reports `NUMBER` without precision or scale. Scale is set from the data (e.g. GPA `NUMBER(38,2)`). Values match; the exact prod declared precision isn't verifiable from the artifacts.
