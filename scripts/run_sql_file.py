@@ -7,6 +7,7 @@ from snowflake.connector.util_text import split_statements
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--connection", required=True); ap.add_argument("file"); ap.add_argument("--set", nargs="*", default=[])
+ap.add_argument("--database", help="create (if needed) and USE this database before running, like picking it in Snowsight")
 a = ap.parse_args()
 sql = open(a.file).read()
 for kv in a.set:
@@ -15,6 +16,9 @@ for kv in a.set:
     if not n: sys.exit(f"no SET {k} line in {a.file}")
 con = snowflake.connector.connect(connection_name=a.connection, **({'password': pw} if (pw := __import__('os').environ.get(f'SNOWFLAKE_CONNECTIONS_{a.connection.upper()}_PASSWORD')) else {}))
 ok = 0
+if a.database:
+    con.cursor().execute(f"create database if not exists {a.database}")
+    con.cursor().execute(f"use database {a.database}")
 for stmt, _ in split_statements(io.StringIO(sql), remove_comments=False):
     if not stmt.strip() or not re.sub(r"--[^\n]*", "", stmt).strip(): continue
     try:

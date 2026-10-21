@@ -50,11 +50,12 @@ def lit(v, typ):
 out = [
     "-- Make your data AI ready with dbt and Snowflake: Snowflake lab bootstrap",
     f"-- Generated from dbt platform production run artifacts. Recreates what that run built, as plain SQL.",
-    "-- Paste into a Snowsight worksheet, set your database below, and Run All.",
+    "--",
+    "-- HOW TO RUN: in a Snowsight worksheet, pick YOUR lab database in the context selector",
+    "-- (top of the worksheet), paste this whole file, then Run All. Takes about a minute.",
+    "-- Everything is created inside the worksheet's current database. Safe to re-run.",
     "",
-    f"SET lab_db = '{PROD_DB}';  -- change to your lab database",
-    "CREATE DATABASE IF NOT EXISTS IDENTIFIER($lab_db);",
-    "USE DATABASE IDENTIFIER($lab_db);",
+    "SELECT CURRENT_DATABASE() AS building_lab_in;  -- if this is NULL, pick a database first",
     "",
 ]
 
