@@ -21,10 +21,19 @@
   pre { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; overflow-x:auto; font-size:13.5px; }
   code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
   a { color:var(--accent); }
+  h3 { font-size:16px; margin:22px 0 8px; }
+  .topnav { display:flex; gap:16px; flex-wrap:wrap; align-items:center; font-size:14px; margin:0 0 22px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+  .topnav a { text-decoration:none; color:var(--muted); font-weight:600; }
+  .topnav a.answers { margin-left:auto; color:var(--accent); }
+  .time { font-size:13px; font-weight:500; color:var(--muted); margin-left:6px; }
+  .done { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--ok); border-radius:8px; padding:10px 14px; }
+  .answersbox { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:8px; padding:12px 14px; margin-top:32px; }
   .checks { position:relative; }
+  .checks pre { padding-top:46px; }
   button.mini { position:absolute; top:8px; right:8px; font-size:13px; padding:7px 12px; border-radius:8px; }
   .small { color:var(--muted); font-size:14px; }
   .code { position:relative; }
+  .code pre { padding-top:46px; }
   table { border-collapse:collapse; width:100%; margin:8px 0 16px; font-size:15px; }
   th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
   th { background:var(--card); }

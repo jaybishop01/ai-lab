@@ -52,6 +52,7 @@ while i < len(lines):
 page = open("index.html").read()
 style = page[page.index("<style>"):page.index("</style>") + 8]
 style = style.replace("</style>", """  .code { position:relative; }
+  .code pre { padding-top:46px; }
   table { border-collapse:collapse; width:100%; margin:8px 0 16px; font-size:15px; }
   th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
   th { background:var(--card); }

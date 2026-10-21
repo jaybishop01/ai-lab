@@ -21,44 +21,67 @@
   pre { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; overflow-x:auto; font-size:13.5px; }
   code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
   a { color:var(--accent); }
+  h3 { font-size:16px; margin:22px 0 8px; }
+  .topnav { display:flex; gap:16px; flex-wrap:wrap; align-items:center; font-size:14px; margin:0 0 22px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+  .topnav a { text-decoration:none; color:var(--muted); font-weight:600; }
+  .topnav a.answers { margin-left:auto; color:var(--accent); }
+  .time { font-size:13px; font-weight:500; color:var(--muted); margin-left:6px; }
+  .done { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--ok); border-radius:8px; padding:10px 14px; }
+  .answersbox { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:8px; padding:12px 14px; margin-top:32px; }
   .checks { position:relative; }
+  .checks pre { padding-top:46px; }
   button.mini { position:absolute; top:8px; right:8px; font-size:13px; padding:7px 12px; border-radius:8px; }
   .small { color:var(--muted); font-size:14px; }
 </style>
 </head>
 <body>
 <main>
+  <nav class="topnav"><a href="#dbt">1 · dbt platform</a><a href="#snowflake">2 · Snowflake</a><a class="answers" href="answers.html">Answers →</a></nav>
   <h1>Make your data AI ready with dbt and Snowflake</h1>
-  <p class="sub">Snowflake lab setup · about 2 minutes</p>
+  <p class="sub">Set up both accounts before we start building · about 10 minutes total</p>
 
-  <h2>1. Copy the setup SQL</h2>
+  <h2 id="dbt">Part 1 · dbt platform account <span class="time">~5 min</span></h2>
+  <ol>
+    <li>Open a <b>private / incognito</b> browser window. (If you're already logged in to dbt, signup can misbehave.)</li>
+    <li>Go to <a href="https://workshops.us1.dbt.com/workshop">workshops.us1.dbt.com/workshop</a>.</li>
+    <li>Fill in your name and work email. For <b>Workshop</b>, pick <b>Make your data AI ready with dbt and Snowflake</b>.</li>
+    <li>Enter the <b>passcode shown on the screen</b>, agree to the terms, and click <b>Complete registration</b>.</li>
+    <li><b>Screenshot the login page</b> (your email and password), then click <b>Log In</b>.</li>
+  </ol>
+  <p class="done"><b>You're set when:</b> you're in dbt platform and can open <b>Studio</b> on the workshop project.</p>
+  <p class="small">Lost your login? Your email is usually <code>firstname.lastname@dbtlabsworkshop.com</code>. Ask a facilitator for the password or a reset.</p>
+
+  <h2 id="snowflake">Part 2 · Snowflake lab data <span class="time">~5 min</span></h2>
+  <h3>1. Copy the setup SQL</h3>
   <div class="copy">
     <button id="copyBtn" disabled>Loading…</button>
     <span id="status">Fetching setup file…</span>
   </div>
   <p class="small">Button not working? <a href="bootstrap.sql" download>Download bootstrap.sql</a> and open it, or <a href="https://github.com/jaybishop01/ai-lab/blob/main/bootstrap.sql">view it on GitHub</a> → Raw → select all.</p>
 
-  <h2>2. Run it in Snowflake</h2>
+  <h3>2. Run it in Snowflake</h3>
   <ol>
-    <li>In your Snowflake lab account, open <b>Projects → Worksheets → + → SQL Worksheet</b>.</li>
+    <li>Log in to your Snowflake lab account and open <b>Projects → Worksheets → + → SQL Worksheet</b>.</li>
     <li>At the top of the worksheet, use the <b>context selector</b> to pick <b>your lab database</b>.</li>
     <li>Paste, then click the <b>▶ dropdown → Run All</b>. Wait about a minute.</li>
   </ol>
 
-  <h2>3. Check it worked</h2>
+  <h3>3. Check it worked</h3>
 <div class="checks"><button class="mini" id="copyChecks">Copy checks</button>
 <pre><code id="checksSql">select count(*) from INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;             -- 750
 show semantic views in schema sv_higher_education;                        -- SV_HED_AT_RISK_STUDENTS
 select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;  -- 257 at-risk students</code></pre></div>
+  <p class="done"><b>You're set when:</b> the three checks return 750, one semantic view, and 257.</p>
 
-  <h2>Fell behind?</h2>
+  <h3>Fell behind?</h3>
   <ul>
     <li><b>Re-running is safe.</b> Paste and Run All again.</li>
     <li><b>First result is NULL:</b> no database selected. Pick one in the context selector.</li>
     <li><b>“Insufficient privileges” or the semantic view fails:</b> raise your hand.</li>
   </ul>
-  <p class="small"><b>Stuck later in the lab?</b> <a href="answers.html">Answers</a> for every part.</p>
-  <p class="small">Full instructions and how this file is built: <a href="https://github.com/jaybishop01/ai-lab">github.com/jaybishop01/ai-lab</a></p>
+
+  <p class="answersbox"><b>Stuck later in the lab?</b> The <a href="answers.html">Answers page</a> has a finished version of every part.</p>
+  <p class="small">How this file is built: <a href="https://github.com/jaybishop01/ai-lab">github.com/jaybishop01/ai-lab</a></p>
 </main>
 <script>
   const btn = document.getElementById('copyBtn'), status = document.getElementById('status');
