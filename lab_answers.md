@@ -173,6 +173,8 @@ SELECT sv_higher_education.ROUTE_STUDENT_ALERT('STU_202400075');  -- NOTIFY_ADVI
 
 In Snowsight: **AI & ML → Agents → + Agent**.
 
+When it asks where to create the agent, pick your lab database and the `SV_HIGHER_EDUCATION` schema.
+
 | Field | Value |
 |---|---|
 | Agent name | `RIDGELINE_STUDENT_SUCCESS_AGENT` |
@@ -220,6 +222,7 @@ Alert responses - when routing an alert, confirm:
 - Student ID and major
 - Routing destination (Dean, Department Chair, or Academic Advisor)
 - Key risk factors triggering the alert
+- Say the alert is prepared for that person, not sent. This tool doesn't send anything.
 
 Never:
 - Skip confirming student_id before routing alerts
@@ -235,6 +238,7 @@ Never:
 | Database | your lab database |
 | Schema | `SV_HIGHER_EDUCATION` |
 | Semantic view | `SV_HED_AT_RISK_STUDENTS` |
+| Warehouse | the warehouse your worksheet uses |
 
 ```
 Query student retention data, risk scores, academic performance, and statistics using natural language. Use this tool to answer questions about at-risk students, filter by major or risk level, calculate aggregate metrics, or analyze retention trends.
@@ -247,6 +251,9 @@ Query student retention data, risk scores, academic performance, and statistics 
 | Tool name | `route_student_alert` |
 | Resource type | `function` |
 | Function | `<your lab database>.SV_HIGHER_EDUCATION.ROUTE_STUDENT_ALERT(VARCHAR)` |
+| Warehouse | the warehouse your worksheet uses |
+
+The form lists one parameter, `STUDENT_ID_INPUT`. Give it this description: `Student ID, e.g. STU_202400421`
 
 ```
 Use this tool to route a retention alert for a specific student. Requires a student_id (e.g., STU_202400421). Returns the student's details, risk assessment, recommended actions, and routing destination (NOTIFY_DEAN, NOTIFY_DEPT_CHAIR, or NOTIFY_ADVISOR). Use when the user asks to route an alert, send an alert, or notify someone about a specific student.
