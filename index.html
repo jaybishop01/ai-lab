@@ -21,6 +21,8 @@
   pre { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; overflow-x:auto; font-size:13.5px; }
   code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
   a { color:var(--accent); }
+  .checks { position:relative; }
+  button.mini { position:absolute; top:8px; right:8px; font-size:13px; padding:7px 12px; border-radius:8px; }
   .small { color:var(--muted); font-size:14px; }
 </style>
 </head>
@@ -44,9 +46,10 @@
   </ol>
 
   <h2>3. Check it worked</h2>
-<pre><code>select count(*) from INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;             -- 750
+<div class="checks"><button class="mini" id="copyChecks">Copy checks</button>
+<pre><code id="checksSql">select count(*) from INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;             -- 750
 show semantic views in schema sv_higher_education;                        -- SV_HED_AT_RISK_STUDENTS
-select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;  -- at-risk students</code></pre>
+select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;  -- at-risk students</code></pre></div>
 
   <h2>Fell behind?</h2>
   <ul>
@@ -68,6 +71,13 @@ select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;  -- at-
     catch { const ta = document.createElement('textarea'); ta.value = sql; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
     status.textContent = 'Copied. Now paste it into a Snowsight worksheet.'; status.className = 'ok';
     btn.textContent = 'Copied ✓';
+  });
+  const cbtn = document.getElementById('copyChecks');
+  cbtn.addEventListener('click', async () => {
+    const text = document.getElementById('checksSql').textContent;
+    try { await navigator.clipboard.writeText(text); }
+    catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+    cbtn.textContent = 'Copied ✓'; setTimeout(() => cbtn.textContent = 'Copy checks', 2000);
   });
 </script>
 </body>
