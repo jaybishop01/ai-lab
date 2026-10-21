@@ -14,7 +14,7 @@ Run these in the same worksheet:
 ```sql
 select count(*) from INDUSTRIES_HIGHER_EDUCATION.HED_RECORDS;                -- 750
 show semantic views in schema sv_higher_education;                           -- SV_HED_AT_RISK_STUDENTS
-select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;     -- at-risk students
+select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;     -- 257 at-risk students
 ```
 
 ## Fell behind? Catch up
@@ -64,6 +64,7 @@ python3 scripts/generate_bootstrap.py --artifacts <run artifacts dir> --rows dat
 Pass the same `--rename` to `scripts/verify_bootstrap.py`.
 
 ## Known limits
+- **Dates are shifted.** The sample data is from 2025, which made every student look a year inactive and Critical. After loading, every date column moves by the same number of days so the newest login is 2026-10-18 (3 days before the 10/21/2026 event). Gaps between dates are unchanged. Change it with `--latest-login` when regenerating. This is the only data difference from prod.
 - The catalog reports `NUMBER` without precision or scale. Scale is set from the data (e.g. GPA `NUMBER(38,2)`). Values match; the exact prod declared precision isn't verifiable from the artifacts.
 - `dq_hed__freshness` depends on the current time, so its output changes day to day, as it does in prod.
 - Needs Snowflake semantic views on the account.

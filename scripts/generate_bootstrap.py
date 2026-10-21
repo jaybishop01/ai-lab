@@ -16,6 +16,7 @@ ap.add_argument("--artifacts", required=True)
 ap.add_argument("--rows", required=True)
 ap.add_argument("--seed-csv", required=True)
 ap.add_argument("--out", required=True)
+ap.add_argument("--latest-login", default="2026-10-18", help="date the newest LAST_LOGIN_DATE is shifted to (event day minus 3)")
 ap.add_argument("--rename", nargs="*", default=[], help="OLD=NEW schema renames, e.g. LUIS_LEON_HIGHER_EDUCATION=INDUSTRIES_HIGHER_EDUCATION")
 a = ap.parse_args()
 d = Path(a.artifacts)
@@ -76,6 +77,15 @@ values = [
 ]
 out += [f"INSERT INTO {src['schema']}.{src['identifier']} ({', '.join(c['name'] for c in cols)}) VALUES",
         ",\n".join(values) + ";", ""]
+# The sample data's dates are from 2025, so against the event date every student looks inactive for
+# a year and lands in the Critical tier. Shift all date columns by the same number of days so the
+# newest login falls on --latest-login (3 days before the 10/21/2026 event). Gaps between dates are unchanged.
+t = f"{src['schema']}.{src['identifier']}"
+shift = lambda col: f"{col} = TO_VARCHAR(DATEADD('day', $shift_days, TRY_TO_TIMESTAMP({col})), 'YYYY-MM-DD HH24:MI:SS')"
+out += [f"-- Shift dates so the 2025 sample data looks current (newest login = {a.latest_login}).",
+        f"SET shift_days = (SELECT DATEDIFF('day', MAX(TRY_TO_TIMESTAMP(LAST_LOGIN_DATE)), '{a.latest_login}'::DATE) FROM {t});",
+        f"UPDATE {t} SET {shift('LAST_LOGIN_DATE')}, {shift('ENROLLMENT_DATE')}, {shift('LAST_UPDATED')},",
+        "  _FIVETRAN_SYNCED = DATEADD('day', $shift_days, _FIVETRAN_SYNCED);", ""]
 
 # Models and seed in dependency order.
 nodes = {k: v for k, v in manifest["nodes"].items() if v["resource_type"] in ("model", "seed")}
