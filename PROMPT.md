@@ -1,21 +1,17 @@
-# One-shot prompt for Cortex Code (CoCO)
+# One-shot prompt for Cortex Code (CoCo)
 
-Paste this into CoCO, or run: `cortex exec -c <connection> --file PROMPT.md`
+Paste this into CoCo. The same file also works by hand: open `bootstrap.sql` in a Snowsight worksheet,
+change the `SET lab_db` line, and Run All.
 
 ---
-Set up the "Make your data AI ready with dbt and Snowflake" workshop environment in this Snowflake account.
+Set up the "Make your data AI ready with dbt and Snowflake" lab objects in this Snowflake account.
 
-1. In this repo, run `sql/01_source_data.sql` against the current connection. It creates the
-   HED_RECORDS source table with 50 sample students. (Use `sql/00_account_setup.sql` first only if
-   this is a brand new account and you have ACCOUNTADMIN.)
-2. Clone https://github.com/dbt-labs/snowflake_sko_hol_2026 next to this repo.
-3. Create a dbt profile named `industries_snowflake` for the same connection. Use the same database
-   as step 1 for models, and a role that can create schemas.
-4. In the cloned project run `dbt deps`, then `dbt build --select +sv_hed_at_risk_students`. That builds only the
-   semantic view and the 3 models upstream of it, which is all the Snowflake half of the workshop needs.
-   (For the full production build, run `dbt source freshness` and plain `dbt build` instead.)
-   Do not create any functions. Attendees create ROUTE_STUDENT_ALERT themselves in the lab.
-5. Report each model, test, and the semantic view `sv_hed_at_risk_students` as pass or fail.
-   Then run `select count(*) from sv_higher_education.vw_hed_student_success_kpi`.
+1. Open `bootstrap.sql` from https://github.com/dbt-labs/ai-ready-workshop-bootstrap (or this folder).
+2. Change the line `SET lab_db = 'SNOWFLAKE_SUMMIT_2026_HOL_DB';` to use my lab database: <YOUR_DATABASE>.
+3. Run every statement in the file, in order. Stop and show me the error if one fails.
+4. Then run these checks and show the results:
+   - `select count(*) from LUIS_LEON_HIGHER_EDUCATION.HED_RECORDS;`  (expect 750)
+   - `show semantic views in schema sv_higher_education;`  (expect SV_HED_AT_RISK_STUDENTS)
+   - `select count(*) from sv_higher_education.vw_hed_retention_risk_analysis;`
 
-Do not touch any database other than the one named in step 1. Stop and ask if something fails twice.
+Do not create any functions or agents. Do not touch any database other than <YOUR_DATABASE>.

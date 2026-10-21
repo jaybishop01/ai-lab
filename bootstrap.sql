@@ -862,31 +862,31 @@ staged as (
 
 select * from staged;
 COMMENT ON VIEW sv_higher_education.stg_hed__students IS 'Staging model for HED student records. Single source of truth that centralizes the source reference, standardizes column naming, and provides base calculations used across all downstream models.';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.RECORD_ID IS 'Primary key for each record';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.STUDENT_ID IS 'Unique student identifier';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.ADVISOR_ID IS 'Academic advisor assigned to student';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.MAJOR_CODE IS 'Student''s declared major code';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.ACADEMIC_STANDING IS 'Current academic status (e.g., Good Standing, Probation)';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.CURRENT_GPA IS 'Current cumulative GPA';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.CREDIT_HOURS_ATTEMPTED IS 'Total credit hours attempted';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.CREDIT_HOURS_EARNED IS 'Total credit hours earned';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.COURSE_COMPLETION_RATE IS 'Percentage of courses completed (0-1 scale)';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.AVG_ASSIGNMENT_SCORE IS 'Average score across all assignments';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.ENGAGEMENT_SCORE IS 'Composite engagement metric (0-100)';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.TOTAL_COURSE_VIEWS IS 'Total number of course material views';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.ASSIGNMENT_SUBMISSIONS IS 'Number of assignments submitted';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.DISCUSSION_POSTS IS 'Number of discussion forum posts';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.PLAGIARISM_INCIDENTS IS 'Number of academic integrity violations';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.WRITING_QUALITY_SCORE IS 'Writing assessment score (0-100)';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.FINANCIAL_AID_AMOUNT IS 'Total financial aid received';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.AT_RISK_FLAG IS 'Boolean flag indicating retention risk';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.INTERVENTION_COUNT IS 'Number of academic interventions';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.ENROLLMENT_DATE IS 'Date student enrolled';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.LAST_LOGIN_DATE IS 'Most recent LMS login timestamp';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.LAST_UPDATED IS 'Timestamp of last record update';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.DAYS_SINCE_LAST_LOGIN IS 'Calculated: Days since last LMS login';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.DAYS_ACTIVE_SINCE_ENROLLMENT IS 'Calculated: Days between enrollment and last login';
-COMMENT ON COLUMN sv_higher_education.stg_hed__students.CREDIT_SUCCESS_RATE_PCT IS 'Calculated: Percentage of attempted credits earned';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN RECORD_ID COMMENT 'Primary key for each record';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN STUDENT_ID COMMENT 'Unique student identifier';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN ADVISOR_ID COMMENT 'Academic advisor assigned to student';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN MAJOR_CODE COMMENT 'Student''s declared major code';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN ACADEMIC_STANDING COMMENT 'Current academic status (e.g., Good Standing, Probation)';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN CURRENT_GPA COMMENT 'Current cumulative GPA';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN CREDIT_HOURS_ATTEMPTED COMMENT 'Total credit hours attempted';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN CREDIT_HOURS_EARNED COMMENT 'Total credit hours earned';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN COURSE_COMPLETION_RATE COMMENT 'Percentage of courses completed (0-1 scale)';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN AVG_ASSIGNMENT_SCORE COMMENT 'Average score across all assignments';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN ENGAGEMENT_SCORE COMMENT 'Composite engagement metric (0-100)';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN TOTAL_COURSE_VIEWS COMMENT 'Total number of course material views';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN ASSIGNMENT_SUBMISSIONS COMMENT 'Number of assignments submitted';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN DISCUSSION_POSTS COMMENT 'Number of discussion forum posts';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN PLAGIARISM_INCIDENTS COMMENT 'Number of academic integrity violations';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN WRITING_QUALITY_SCORE COMMENT 'Writing assessment score (0-100)';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN FINANCIAL_AID_AMOUNT COMMENT 'Total financial aid received';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN AT_RISK_FLAG COMMENT 'Boolean flag indicating retention risk';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN INTERVENTION_COUNT COMMENT 'Number of academic interventions';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN ENROLLMENT_DATE COMMENT 'Date student enrolled';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN LAST_LOGIN_DATE COMMENT 'Most recent LMS login timestamp';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN LAST_UPDATED COMMENT 'Timestamp of last record update';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN DAYS_SINCE_LAST_LOGIN COMMENT 'Calculated: Days since last LMS login';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN DAYS_ACTIVE_SINCE_ENROLLMENT COMMENT 'Calculated: Days between enrollment and last login';
+ALTER VIEW sv_higher_education.stg_hed__students MODIFY COLUMN CREDIT_SUCCESS_RATE_PCT COMMENT 'Calculated: Percentage of attempted credits earned';
 
 CREATE OR REPLACE VIEW sv_higher_education.dq_hed__completeness AS
 /*
@@ -946,16 +946,16 @@ completeness_metrics as (
 
 select * from completeness_metrics;
 COMMENT ON VIEW sv_higher_education.dq_hed__completeness IS 'Data quality component that monitors field completeness across required fields. Calculates missing value counts and completeness percentages for student IDs, enrollment dates, academic standing, GPA, and major codes.';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.QUALITY_DIMENSION IS 'Quality dimension identifier (Record Completeness)';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.TOTAL_RECORDS IS 'Total number of records in source';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.UNIQUE_STUDENTS IS 'Count of unique student IDs';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.UNIQUE_RECORD_IDS IS 'Count of unique record IDs';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.MISSING_STUDENT_IDS IS 'Count of records missing student_id';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.MISSING_ENROLLMENT_DATES IS 'Count of records missing enrollment_date';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.MISSING_ACADEMIC_STANDING IS 'Count of records missing academic_standing';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.MISSING_GPA IS 'Count of records missing current_gpa';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.MISSING_MAJOR_CODES IS 'Count of records missing major_code';
-COMMENT ON COLUMN sv_higher_education.dq_hed__completeness.OVERALL_COMPLETENESS_SCORE IS 'Overall completeness score (0-100)';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN QUALITY_DIMENSION COMMENT 'Quality dimension identifier (Record Completeness)';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN TOTAL_RECORDS COMMENT 'Total number of records in source';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN UNIQUE_STUDENTS COMMENT 'Count of unique student IDs';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN UNIQUE_RECORD_IDS COMMENT 'Count of unique record IDs';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN MISSING_STUDENT_IDS COMMENT 'Count of records missing student_id';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN MISSING_ENROLLMENT_DATES COMMENT 'Count of records missing enrollment_date';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN MISSING_ACADEMIC_STANDING COMMENT 'Count of records missing academic_standing';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN MISSING_GPA COMMENT 'Count of records missing current_gpa';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN MISSING_MAJOR_CODES COMMENT 'Count of records missing major_code';
+ALTER VIEW sv_higher_education.dq_hed__completeness MODIFY COLUMN OVERALL_COMPLETENESS_SCORE COMMENT 'Overall completeness score (0-100)';
 
 CREATE OR REPLACE VIEW sv_higher_education.dq_hed__duplicates AS
 /*
@@ -996,14 +996,14 @@ duplicate_metrics as (
 
 select * from duplicate_metrics;
 COMMENT ON VIEW sv_higher_education.dq_hed__duplicates IS 'Data quality component that detects duplicate records. Identifies duplicate student IDs and record IDs, calculating uniqueness percentages.';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.QUALITY_DIMENSION IS 'Quality dimension identifier (Duplicate Detection)';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.TOTAL_RECORDS IS 'Total number of records';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.UNIQUE_STUDENTS IS 'Count of unique students';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.DUPLICATE_STUDENT_RECORDS IS 'Count of duplicate student records';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.UNIQUE_RECORD_IDS IS 'Count of unique record IDs';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.DUPLICATE_RECORD_IDS IS 'Count of duplicate record IDs';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.STUDENT_UNIQUENESS_PCT IS 'Percentage of unique student records';
-COMMENT ON COLUMN sv_higher_education.dq_hed__duplicates.RECORD_ID_UNIQUENESS_PCT IS 'Percentage of unique record IDs';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN QUALITY_DIMENSION COMMENT 'Quality dimension identifier (Duplicate Detection)';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN TOTAL_RECORDS COMMENT 'Total number of records';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN UNIQUE_STUDENTS COMMENT 'Count of unique students';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN DUPLICATE_STUDENT_RECORDS COMMENT 'Count of duplicate student records';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN UNIQUE_RECORD_IDS COMMENT 'Count of unique record IDs';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN DUPLICATE_RECORD_IDS COMMENT 'Count of duplicate record IDs';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN STUDENT_UNIQUENESS_PCT COMMENT 'Percentage of unique student records';
+ALTER VIEW sv_higher_education.dq_hed__duplicates MODIFY COLUMN RECORD_ID_UNIQUENESS_PCT COMMENT 'Percentage of unique record IDs';
 
 CREATE OR REPLACE VIEW sv_higher_education.dq_hed__freshness AS
 /*
@@ -1053,14 +1053,14 @@ freshness_metrics as (
 
 select * from freshness_metrics;
 COMMENT ON VIEW sv_higher_education.dq_hed__freshness IS 'Data quality component that monitors data freshness and staleness. Tracks most recent updates, calculates hours/days since last update, and identifies stale records.';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.QUALITY_DIMENSION IS 'Quality dimension identifier (Data Freshness)';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.MOST_RECENT_UPDATE IS 'Timestamp of most recent data update';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.OLDEST_UPDATE IS 'Timestamp of oldest data update';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.HOURS_SINCE_LAST_UPDATE IS 'Hours elapsed since last update';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.DAYS_SINCE_LAST_UPDATE IS 'Days elapsed since last update';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.FRESHNESS_STATUS IS 'Freshness classification (Excellent/Good/Acceptable/Needs Attention/Stale)';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.RECORDS_OVER_7_DAYS_OLD IS 'Count of records not updated in 7+ days';
-COMMENT ON COLUMN sv_higher_education.dq_hed__freshness.RECORDS_CURRENT_PCT IS 'Percentage of records updated within 7 days';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN QUALITY_DIMENSION COMMENT 'Quality dimension identifier (Data Freshness)';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN MOST_RECENT_UPDATE COMMENT 'Timestamp of most recent data update';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN OLDEST_UPDATE COMMENT 'Timestamp of oldest data update';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN HOURS_SINCE_LAST_UPDATE COMMENT 'Hours elapsed since last update';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN DAYS_SINCE_LAST_UPDATE COMMENT 'Days elapsed since last update';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN FRESHNESS_STATUS COMMENT 'Freshness classification (Excellent/Good/Acceptable/Needs Attention/Stale)';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN RECORDS_OVER_7_DAYS_OLD COMMENT 'Count of records not updated in 7+ days';
+ALTER VIEW sv_higher_education.dq_hed__freshness MODIFY COLUMN RECORDS_CURRENT_PCT COMMENT 'Percentage of records updated within 7 days';
 
 CREATE OR REPLACE VIEW sv_higher_education.dq_hed__validity AS
 /*
@@ -1159,12 +1159,12 @@ validity_metrics as (
 
 select * from validity_metrics;
 COMMENT ON VIEW sv_higher_education.dq_hed__validity IS 'Data quality component that validates data ranges and logical consistency. Checks GPA bounds, credit hour logic, completion rate bounds, engagement score bounds, financial aid validity, and date logic.';
-COMMENT ON COLUMN sv_higher_education.dq_hed__validity.QUALITY_DIMENSION IS 'Quality dimension identifier (Data Validity)';
-COMMENT ON COLUMN sv_higher_education.dq_hed__validity.INVALID_GPA_RECORDS IS 'Count of records with GPA outside 0.0-4.0 range';
-COMMENT ON COLUMN sv_higher_education.dq_hed__validity.GPA_VALIDITY_PCT IS 'Percentage of records with valid GPA';
-COMMENT ON COLUMN sv_higher_education.dq_hed__validity.INVALID_CREDIT_HOUR_RECORDS IS 'Count of records where earned > attempted';
-COMMENT ON COLUMN sv_higher_education.dq_hed__validity.CREDIT_HOURS_VALIDITY_PCT IS 'Percentage of records with valid credit hours';
-COMMENT ON COLUMN sv_higher_education.dq_hed__validity.OVERALL_VALIDITY_SCORE IS 'Overall validity score (0-100)';
+ALTER VIEW sv_higher_education.dq_hed__validity MODIFY COLUMN QUALITY_DIMENSION COMMENT 'Quality dimension identifier (Data Validity)';
+ALTER VIEW sv_higher_education.dq_hed__validity MODIFY COLUMN INVALID_GPA_RECORDS COMMENT 'Count of records with GPA outside 0.0-4.0 range';
+ALTER VIEW sv_higher_education.dq_hed__validity MODIFY COLUMN GPA_VALIDITY_PCT COMMENT 'Percentage of records with valid GPA';
+ALTER VIEW sv_higher_education.dq_hed__validity MODIFY COLUMN INVALID_CREDIT_HOUR_RECORDS COMMENT 'Count of records where earned > attempted';
+ALTER VIEW sv_higher_education.dq_hed__validity MODIFY COLUMN CREDIT_HOURS_VALIDITY_PCT COMMENT 'Percentage of records with valid credit hours';
+ALTER VIEW sv_higher_education.dq_hed__validity MODIFY COLUMN OVERALL_VALIDITY_SCORE COMMENT 'Overall validity score (0-100)';
 
 CREATE OR REPLACE VIEW sv_higher_education.int_hed__engagement_categories AS
 /*
@@ -1345,17 +1345,17 @@ final as (
 
 select * from final;
 COMMENT ON VIEW sv_higher_education.int_hed__engagement_categories IS 'Intermediate model providing centralized engagement categorization logic. Calculates login recency, course views, assignment activity, discussion participation, and engagement levels used by downstream engagement analytics models.';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.STUDENT_ID IS 'Unique student identifier';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.LOGIN_RECENCY_CATEGORY IS 'Categorical description of login recency (Today, Within 24 Hours, etc.)';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.COURSE_VIEWS_CATEGORY IS 'Course viewing behavior category (Very High/High/Moderate/Low/Very Low)';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.ASSIGNMENT_ACTIVITY_CATEGORY IS 'Assignment submission activity level';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.ASSIGNMENT_PERFORMANCE_CATEGORY IS 'Assignment score performance category';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.DISCUSSION_PARTICIPATION_CATEGORY IS 'Discussion forum participation level';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.ENGAGEMENT_LEVEL IS 'Overall engagement classification (Highly Engaged to Critically Disengaged)';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.ENGAGEMENT_BALANCE_SCORE IS 'Normalized score measuring diversity of engagement across dimensions';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.ENGAGEMENT_PERFORMANCE_QUADRANT IS 'Classification combining engagement and academic performance';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.ENGAGEMENT_CONCERN_LEVEL IS 'Urgency classification for engagement-related concerns';
-COMMENT ON COLUMN sv_higher_education.int_hed__engagement_categories.RECOMMENDED_ENGAGEMENT_ACTION IS 'Specific recommended actions based on engagement profile';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN STUDENT_ID COMMENT 'Unique student identifier';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN LOGIN_RECENCY_CATEGORY COMMENT 'Categorical description of login recency (Today, Within 24 Hours, etc.)';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN COURSE_VIEWS_CATEGORY COMMENT 'Course viewing behavior category (Very High/High/Moderate/Low/Very Low)';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN ASSIGNMENT_ACTIVITY_CATEGORY COMMENT 'Assignment submission activity level';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN ASSIGNMENT_PERFORMANCE_CATEGORY COMMENT 'Assignment score performance category';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN DISCUSSION_PARTICIPATION_CATEGORY COMMENT 'Discussion forum participation level';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN ENGAGEMENT_LEVEL COMMENT 'Overall engagement classification (Highly Engaged to Critically Disengaged)';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN ENGAGEMENT_BALANCE_SCORE COMMENT 'Normalized score measuring diversity of engagement across dimensions';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN ENGAGEMENT_PERFORMANCE_QUADRANT COMMENT 'Classification combining engagement and academic performance';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN ENGAGEMENT_CONCERN_LEVEL COMMENT 'Urgency classification for engagement-related concerns';
+ALTER VIEW sv_higher_education.int_hed__engagement_categories MODIFY COLUMN RECOMMENDED_ENGAGEMENT_ACTION COMMENT 'Specific recommended actions based on engagement profile';
 
 CREATE OR REPLACE VIEW sv_higher_education.int_hed__risk_levels AS
 /*
@@ -1513,15 +1513,15 @@ final as (
 
 select * from final;
 COMMENT ON VIEW sv_higher_education.int_hed__risk_levels IS 'Intermediate model providing centralized risk categorization logic. Calculates GPA risk, completion risk, engagement risk, login recency risk, and overall risk assessment used by downstream retention analysis models.';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.STUDENT_ID IS 'Unique student identifier';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.GPA_RISK_LEVEL IS 'Risk categorization based on GPA (Critical/High/Moderate/Low)';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.COMPLETION_RISK_LEVEL IS 'Risk categorization based on course completion rate';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.ENGAGEMENT_RISK_LEVEL IS 'Risk categorization based on engagement score';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.LOGIN_RECENCY_RISK_LEVEL IS 'Risk categorization based on days since last login';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.FINANCIAL_AID_CATEGORY IS 'Financial aid classification (No Aid/Partial Aid/Full Support)';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.INTERVENTION_CATEGORY IS 'Intervention frequency classification';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.OVERALL_RISK_ASSESSMENT IS 'Composite risk level combining all dimensions';
-COMMENT ON COLUMN sv_higher_education.int_hed__risk_levels.RECOMMENDED_ACTION IS 'Recommended interventions based on risk profile';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN STUDENT_ID COMMENT 'Unique student identifier';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN GPA_RISK_LEVEL COMMENT 'Risk categorization based on GPA (Critical/High/Moderate/Low)';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN COMPLETION_RISK_LEVEL COMMENT 'Risk categorization based on course completion rate';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN ENGAGEMENT_RISK_LEVEL COMMENT 'Risk categorization based on engagement score';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN LOGIN_RECENCY_RISK_LEVEL COMMENT 'Risk categorization based on days since last login';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN FINANCIAL_AID_CATEGORY COMMENT 'Financial aid classification (No Aid/Partial Aid/Full Support)';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN INTERVENTION_CATEGORY COMMENT 'Intervention frequency classification';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN OVERALL_RISK_ASSESSMENT COMMENT 'Composite risk level combining all dimensions';
+ALTER VIEW sv_higher_education.int_hed__risk_levels MODIFY COLUMN RECOMMENDED_ACTION COMMENT 'Recommended interventions based on risk profile';
 
 CREATE OR REPLACE TABLE sv_higher_education.metricflow_time_spine AS
 -- models/metricflow_time_spine.sql
@@ -1762,27 +1762,27 @@ order by
   current_gpa asc,
   engagement_score asc;
 COMMENT ON VIEW sv_higher_education.vw_hed_retention_risk_analysis IS 'Detailed student-level retention risk analysis identifying at-risk students with risk factors, risk levels, and recommended interventions. Filters to show only at-risk students, ordered by severity.';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.STUDENT_ID IS 'Unique student identifier';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.MAJOR_CODE IS 'Student''s academic major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.ADVISOR_ID IS 'Assigned academic advisor';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.ACADEMIC_STANDING IS 'Current academic status';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.AT_RISK_FLAG IS 'Boolean indicating retention risk (always TRUE in this view)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.CURRENT_GPA IS 'Current cumulative GPA';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.GPA_RISK_LEVEL IS 'Risk categorization based on GPA (Critical/High/Moderate/Low)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.COURSE_COMPLETION_RATE IS 'Percentage of courses completed';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.COMPLETION_RISK_LEVEL IS 'Risk categorization based on completion rate';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.ENGAGEMENT_SCORE IS 'Composite engagement metric (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.ENGAGEMENT_RISK_LEVEL IS 'Risk categorization based on engagement';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.DAYS_SINCE_LAST_LOGIN IS 'Days elapsed since last LMS login';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.LOGIN_RECENCY_RISK_LEVEL IS 'Risk categorization based on login recency';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.FINANCIAL_AID_AMOUNT IS 'Total financial aid received';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.FINANCIAL_AID_CATEGORY IS 'Financial aid classification (No Aid/Partial Aid/Full Support)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.INTERVENTION_COUNT IS 'Number of academic interventions received';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.INTERVENTION_CATEGORY IS 'Intervention frequency classification';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.PLAGIARISM_INCIDENTS IS 'Number of academic integrity violations';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.WRITING_QUALITY_SCORE IS 'Writing assessment score';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.OVERALL_RISK_ASSESSMENT IS 'Composite risk level with severity classification';
-COMMENT ON COLUMN sv_higher_education.vw_hed_retention_risk_analysis.RECOMMENDED_ACTION IS 'Specific recommended interventions based on risk profile';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN STUDENT_ID COMMENT 'Unique student identifier';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN MAJOR_CODE COMMENT 'Student''s academic major';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN ADVISOR_ID COMMENT 'Assigned academic advisor';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN ACADEMIC_STANDING COMMENT 'Current academic status';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN AT_RISK_FLAG COMMENT 'Boolean indicating retention risk (always TRUE in this view)';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN CURRENT_GPA COMMENT 'Current cumulative GPA';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN GPA_RISK_LEVEL COMMENT 'Risk categorization based on GPA (Critical/High/Moderate/Low)';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN COURSE_COMPLETION_RATE COMMENT 'Percentage of courses completed';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN COMPLETION_RISK_LEVEL COMMENT 'Risk categorization based on completion rate';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN ENGAGEMENT_SCORE COMMENT 'Composite engagement metric (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN ENGAGEMENT_RISK_LEVEL COMMENT 'Risk categorization based on engagement';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN DAYS_SINCE_LAST_LOGIN COMMENT 'Days elapsed since last LMS login';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN LOGIN_RECENCY_RISK_LEVEL COMMENT 'Risk categorization based on login recency';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN FINANCIAL_AID_AMOUNT COMMENT 'Total financial aid received';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN FINANCIAL_AID_CATEGORY COMMENT 'Financial aid classification (No Aid/Partial Aid/Full Support)';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN INTERVENTION_COUNT COMMENT 'Number of academic interventions received';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN INTERVENTION_CATEGORY COMMENT 'Intervention frequency classification';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN PLAGIARISM_INCIDENTS COMMENT 'Number of academic integrity violations';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN WRITING_QUALITY_SCORE COMMENT 'Writing assessment score';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN OVERALL_RISK_ASSESSMENT COMMENT 'Composite risk level with severity classification';
+ALTER VIEW sv_higher_education.vw_hed_retention_risk_analysis MODIFY COLUMN RECOMMENDED_ACTION COMMENT 'Specific recommended interventions based on risk profile';
 
 CREATE OR REPLACE SEMANTIC VIEW sv_higher_education.sv_hed_at_risk_students
 tables (
@@ -1818,7 +1818,7 @@ tables (
     AT_RISK_STUDENTS.STUDENT_ID as STUDENT_ID comment='Unique student identifier (e.g., STU_202400001)'
   )
   comment='Student Retention semantic model for analyzing at-risk students. Contains multi-factor risk assessments, academic performance metrics, engagement analytics, financial aid information, and recommended interventions. Used for identifying students requiring support and routing retention alerts to appropriate academic staff.'
-  with extension (CA='{"tables":[{"name":"at_risk_students","dimensions":[{"name":"academic_standing","sample_values":["Dean''s List","Excellent Standing","Good Standing","Satisfactory Progress","Conditional Standing","Academic Warning","Warning Status","Probationary Status","Academic Probation","Academic Suspension"]},{"name":"advisor_id"},{"name":"at_risk_flag"},{"name":"completion_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"engagement_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"enrollment_date"},{"name":"gpa_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"last_login_date"},{"name":"last_updated"},{"name":"login_recency_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"major_code","sample_values":["ENGR","BUSN","NURS","PSYC","COMP","BIOL"]},{"name":"overall_risk_assessment","sample_values":["Critical - Immediate Intervention","High - Priority Attention","Moderate - Monitor Closely","Low - Watch List"]},{"name":"recommended_action"},{"name":"student_id","unique":true}],"facts":[{"name":"assignment_submissions"},{"name":"course_completion_rate"},{"name":"current_gpa"},{"name":"days_since_last_login"},{"name":"discussion_posts"},{"name":"engagement_score"},{"name":"financial_aid_amount"},{"name":"intervention_count"},{"name":"plagiarism_incidents"},{"name":"total_course_views"},{"name":"writing_quality_score"}],"filters":[{"name":"critical_risk_only","description":"Filter to only Critical risk students","expr":"OVERALL_RISK_ASSESSMENT LIKE ''%Critical%''"},{"name":"high_financial_aid","description":"Students receiving $10,000+ in financial aid","expr":"FINANCIAL_AID_AMOUNT >= 10000"},{"name":"high_priority","description":"Filter to Critical and High risk students","expr":"OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR OVERALL_RISK_ASSESSMENT LIKE ''%High%''"},{"name":"inactive_14_days","description":"Students who haven''t logged in for 14+ days","expr":"DAYS_SINCE_LAST_LOGIN >= 14"},{"name":"inactive_21_days","description":"Students who haven''t logged in for 21+ days (critical threshold)","expr":"DAYS_SINCE_LAST_LOGIN >= 21"},{"name":"low_completion","description":"Students with course completion rate below 50%","expr":"COURSE_COMPLETION_RATE < 0.5"},{"name":"low_engagement","description":"Students with engagement score below 40","expr":"ENGAGEMENT_SCORE < 40"},{"name":"low_gpa","description":"Students with GPA below 2.0","expr":"CURRENT_GPA < 2.0"},{"name":"needs_immediate_attention","description":"Students requiring immediate Dean or Chair notification","expr":"OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR (CURRENT_GPA < 2.0) OR (DAYS_SINCE_LAST_LOGIN > 21)"},{"name":"needs_intervention","description":"Students with multiple intervention indicators","expr":"(CURRENT_GPA < 2.0 OR COURSE_COMPLETION_RATE < 0.5 OR DAYS_SINCE_LAST_LOGIN >= 14)"},{"name":"on_probation","description":"Students on academic probation or warning","expr":"ACADEMIC_STANDING IN (''Probationary Status'', ''Academic Probation'', ''Academic Warning'', ''Warning Status'')"}]}],"verified_queries":[{"name":"critical_risk_students","question":"Which students are at critical risk and need immediate intervention?","use_as_onboarding_question":true,"sql":"SELECT student_id, current_gpa, days_since_last_login, engagement_score, overall_risk_assessment, academic_standing, recommended_action FROM __at_risk_students WHERE overall_risk_assessment LIKE ''%Critical%'' ORDER BY current_gpa ASC"},{"name":"average_gpa_by_major","question":"What is the average GPA by major?","use_as_onboarding_question":true,"sql":"SELECT major_code, AVG(current_gpa) AS avg_gpa, COUNT(*) AS student_count FROM __at_risk_students GROUP BY major_code ORDER BY avg_gpa ASC"},{"name":"students_per_risk_category","question":"How many students are in each risk category?","use_as_onboarding_question":true,"sql":"SELECT overall_risk_assessment, COUNT(*) AS student_count FROM __at_risk_students GROUP BY overall_risk_assessment ORDER BY student_count DESC"},{"name":"inactive_students_21_days","question":"Which students have not logged in for more than 21 days?","sql":"SELECT student_id, days_since_last_login, engagement_score, current_gpa, overall_risk_assessment, recommended_action FROM __at_risk_students WHERE days_since_last_login > 21 ORDER BY days_since_last_login DESC"},{"name":"probation_student_averages","question":"What is the average engagement score and GPA for students on academic probation?","sql":"SELECT academic_standing, AVG(engagement_score) AS avg_engagement_score, AVG(current_gpa) AS avg_gpa, COUNT(*) AS student_count FROM __at_risk_students WHERE academic_standing IN (''Probationary Status'', ''Academic Probation'', ''Academic Warning'', ''Warning Status'') GROUP BY academic_standing ORDER BY avg_gpa ASC"}]}');;
+  with extension (CA='{"tables":[{"name":"at_risk_students","dimensions":[{"name":"academic_standing","sample_values":["Dean''s List","Excellent Standing","Good Standing","Satisfactory Progress","Conditional Standing","Academic Warning","Warning Status","Probationary Status","Academic Probation","Academic Suspension"]},{"name":"advisor_id"},{"name":"at_risk_flag"},{"name":"completion_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"engagement_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"enrollment_date"},{"name":"gpa_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"last_login_date"},{"name":"last_updated"},{"name":"login_recency_risk_level","sample_values":["Critical","High","Moderate","Low"]},{"name":"major_code","sample_values":["ENGR","BUSN","NURS","PSYC","COMP","BIOL"]},{"name":"overall_risk_assessment","sample_values":["Critical - Immediate Intervention","High - Priority Attention","Moderate - Monitor Closely","Low - Watch List"]},{"name":"recommended_action"},{"name":"student_id","unique":true}],"facts":[{"name":"assignment_submissions"},{"name":"course_completion_rate"},{"name":"current_gpa"},{"name":"days_since_last_login"},{"name":"discussion_posts"},{"name":"engagement_score"},{"name":"financial_aid_amount"},{"name":"intervention_count"},{"name":"plagiarism_incidents"},{"name":"total_course_views"},{"name":"writing_quality_score"}],"filters":[{"name":"critical_risk_only","description":"Filter to only Critical risk students","expr":"OVERALL_RISK_ASSESSMENT LIKE ''%Critical%''"},{"name":"high_financial_aid","description":"Students receiving $10,000+ in financial aid","expr":"FINANCIAL_AID_AMOUNT >= 10000"},{"name":"high_priority","description":"Filter to Critical and High risk students","expr":"OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR OVERALL_RISK_ASSESSMENT LIKE ''%High%''"},{"name":"inactive_14_days","description":"Students who haven''t logged in for 14+ days","expr":"DAYS_SINCE_LAST_LOGIN >= 14"},{"name":"inactive_21_days","description":"Students who haven''t logged in for 21+ days (critical threshold)","expr":"DAYS_SINCE_LAST_LOGIN >= 21"},{"name":"low_completion","description":"Students with course completion rate below 50%","expr":"COURSE_COMPLETION_RATE < 0.5"},{"name":"low_engagement","description":"Students with engagement score below 40","expr":"ENGAGEMENT_SCORE < 40"},{"name":"low_gpa","description":"Students with GPA below 2.0","expr":"CURRENT_GPA < 2.0"},{"name":"needs_immediate_attention","description":"Students requiring immediate Dean or Chair notification","expr":"OVERALL_RISK_ASSESSMENT LIKE ''%Critical%'' OR (CURRENT_GPA < 2.0) OR (DAYS_SINCE_LAST_LOGIN > 21)"},{"name":"needs_intervention","description":"Students with multiple intervention indicators","expr":"(CURRENT_GPA < 2.0 OR COURSE_COMPLETION_RATE < 0.5 OR DAYS_SINCE_LAST_LOGIN >= 14)"},{"name":"on_probation","description":"Students on academic probation or warning","expr":"ACADEMIC_STANDING IN (''Probationary Status'', ''Academic Probation'', ''Academic Warning'', ''Warning Status'')"}]}],"verified_queries":[{"name":"critical_risk_students","question":"Which students are at critical risk and need immediate intervention?","use_as_onboarding_question":true,"sql":"SELECT student_id, current_gpa, days_since_last_login, engagement_score, overall_risk_assessment, academic_standing, recommended_action FROM __at_risk_students WHERE overall_risk_assessment LIKE ''%Critical%'' ORDER BY current_gpa ASC"},{"name":"average_gpa_by_major","question":"What is the average GPA by major?","use_as_onboarding_question":true,"sql":"SELECT major_code, AVG(current_gpa) AS avg_gpa, COUNT(*) AS student_count FROM __at_risk_students GROUP BY major_code ORDER BY avg_gpa ASC"},{"name":"students_per_risk_category","question":"How many students are in each risk category?","use_as_onboarding_question":true,"sql":"SELECT overall_risk_assessment, COUNT(*) AS student_count FROM __at_risk_students GROUP BY overall_risk_assessment ORDER BY student_count DESC"},{"name":"inactive_students_21_days","question":"Which students have not logged in for more than 21 days?","sql":"SELECT student_id, days_since_last_login, engagement_score, current_gpa, overall_risk_assessment, recommended_action FROM __at_risk_students WHERE days_since_last_login > 21 ORDER BY days_since_last_login DESC"},{"name":"probation_student_averages","question":"What is the average engagement score and GPA for students on academic probation?","sql":"SELECT academic_standing, AVG(engagement_score) AS avg_engagement_score, AVG(current_gpa) AS avg_gpa, COUNT(*) AS student_count FROM __at_risk_students WHERE academic_standing IN (''Probationary Status'', ''Academic Probation'', ''Academic Warning'', ''Warning Status'') GROUP BY academic_standing ORDER BY avg_gpa ASC"}]}');
 
 CREATE OR REPLACE VIEW sv_higher_education.vw_hed_data_quality AS
 /*
@@ -1899,18 +1899,18 @@ summary as (
 
 select * from summary;
 COMMENT ON VIEW sv_higher_education.vw_hed_data_quality IS 'Data quality monitoring dashboard providing completeness, validity, uniqueness, freshness, and anomaly detection metrics. Single-row summary with composite quality score and status.';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.QUALITY_CHECK_TIMESTAMP IS 'Timestamp when quality checks were executed';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.REPORT_SECTION IS 'Report section identifier';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.COMPLETENESS_SCORE IS 'Overall data completeness score (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.VALIDITY_SCORE IS 'Overall data validity score (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.UNIQUENESS_SCORE IS 'Student record uniqueness score (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.FRESHNESS_SCORE IS 'Data freshness score based on update recency (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.COMPOSITE_QUALITY_SCORE IS 'Composite quality score averaging all dimensions (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.OVERALL_QUALITY_STATUS IS 'Qualitative quality assessment (Excellent/Good/Acceptable/Needs Improvement)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.TOTAL_RECORDS IS 'Total number of records in source table';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.UNIQUE_STUDENTS IS 'Number of unique students';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.MOST_RECENT_DATA_UPDATE IS 'Timestamp of most recent data update';
-COMMENT ON COLUMN sv_higher_education.vw_hed_data_quality.HOURS_SINCE_LAST_UPDATE IS 'Hours elapsed since most recent update';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN QUALITY_CHECK_TIMESTAMP COMMENT 'Timestamp when quality checks were executed';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN REPORT_SECTION COMMENT 'Report section identifier';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN COMPLETENESS_SCORE COMMENT 'Overall data completeness score (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN VALIDITY_SCORE COMMENT 'Overall data validity score (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN UNIQUENESS_SCORE COMMENT 'Student record uniqueness score (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN FRESHNESS_SCORE COMMENT 'Data freshness score based on update recency (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN COMPOSITE_QUALITY_SCORE COMMENT 'Composite quality score averaging all dimensions (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN OVERALL_QUALITY_STATUS COMMENT 'Qualitative quality assessment (Excellent/Good/Acceptable/Needs Improvement)';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN TOTAL_RECORDS COMMENT 'Total number of records in source table';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN UNIQUE_STUDENTS COMMENT 'Number of unique students';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN MOST_RECENT_DATA_UPDATE COMMENT 'Timestamp of most recent data update';
+ALTER VIEW sv_higher_education.vw_hed_data_quality MODIFY COLUMN HOURS_SINCE_LAST_UPDATE COMMENT 'Hours elapsed since most recent update';
 
 CREATE OR REPLACE VIEW sv_higher_education.vw_hed_engagement_analytics AS
 /*
@@ -1997,31 +1997,31 @@ order by
     days_since_last_login desc,
     engagement_score asc;
 COMMENT ON VIEW sv_higher_education.vw_hed_engagement_analytics IS 'Student-level engagement analysis examining LMS login patterns, course interactions, assignment behavior, and discussion participation. Identifies engagement concerns and recommends actions, ordered by urgency.';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.STUDENT_ID IS 'Unique student identifier';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.MAJOR_CODE IS 'Student''s academic major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ACADEMIC_STANDING IS 'Current academic status';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.AT_RISK_FLAG IS 'Retention risk indicator';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.LAST_LOGIN_DATE IS 'Most recent LMS login timestamp';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.DAYS_SINCE_LAST_LOGIN IS 'Days elapsed since last login';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.DAYS_ACTIVE_SINCE_ENROLLMENT IS 'Days between enrollment and last login';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.LOGIN_RECENCY_CATEGORY IS 'Categorical description of login recency';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.TOTAL_COURSE_VIEWS IS 'Total course material views';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.COURSE_VIEWS_CATEGORY IS 'Categorical classification of course viewing behavior';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ASSIGNMENT_SUBMISSIONS IS 'Number of assignments submitted';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.AVG_ASSIGNMENT_SCORE IS 'Average assignment score';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ASSIGNMENT_ACTIVITY_CATEGORY IS 'Categorical classification of assignment activity';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ASSIGNMENT_PERFORMANCE_CATEGORY IS 'Categorical classification of assignment performance';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.DISCUSSION_POSTS IS 'Number of discussion forum posts';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.DISCUSSION_PARTICIPATION_CATEGORY IS 'Categorical classification of discussion participation';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ENGAGEMENT_SCORE IS 'Composite engagement metric (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ENGAGEMENT_LEVEL IS 'Qualitative engagement level classification';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ENGAGEMENT_BALANCE_SCORE IS 'Normalized score measuring diversity of engagement across dimensions';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.CURRENT_GPA IS 'Current GPA';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.COURSE_COMPLETION_RATE IS 'Course completion percentage';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.INTERVENTION_COUNT IS 'Number of interventions received';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ENGAGEMENT_PERFORMANCE_QUADRANT IS 'Classification combining engagement and academic performance';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.ENGAGEMENT_CONCERN_LEVEL IS 'Urgency classification for engagement-related concerns';
-COMMENT ON COLUMN sv_higher_education.vw_hed_engagement_analytics.RECOMMENDED_ENGAGEMENT_ACTION IS 'Specific recommended actions to improve or maintain engagement';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN STUDENT_ID COMMENT 'Unique student identifier';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN MAJOR_CODE COMMENT 'Student''s academic major';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ACADEMIC_STANDING COMMENT 'Current academic status';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN AT_RISK_FLAG COMMENT 'Retention risk indicator';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN LAST_LOGIN_DATE COMMENT 'Most recent LMS login timestamp';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN DAYS_SINCE_LAST_LOGIN COMMENT 'Days elapsed since last login';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN DAYS_ACTIVE_SINCE_ENROLLMENT COMMENT 'Days between enrollment and last login';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN LOGIN_RECENCY_CATEGORY COMMENT 'Categorical description of login recency';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN TOTAL_COURSE_VIEWS COMMENT 'Total course material views';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN COURSE_VIEWS_CATEGORY COMMENT 'Categorical classification of course viewing behavior';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ASSIGNMENT_SUBMISSIONS COMMENT 'Number of assignments submitted';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN AVG_ASSIGNMENT_SCORE COMMENT 'Average assignment score';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ASSIGNMENT_ACTIVITY_CATEGORY COMMENT 'Categorical classification of assignment activity';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ASSIGNMENT_PERFORMANCE_CATEGORY COMMENT 'Categorical classification of assignment performance';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN DISCUSSION_POSTS COMMENT 'Number of discussion forum posts';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN DISCUSSION_PARTICIPATION_CATEGORY COMMENT 'Categorical classification of discussion participation';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ENGAGEMENT_SCORE COMMENT 'Composite engagement metric (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ENGAGEMENT_LEVEL COMMENT 'Qualitative engagement level classification';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ENGAGEMENT_BALANCE_SCORE COMMENT 'Normalized score measuring diversity of engagement across dimensions';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN CURRENT_GPA COMMENT 'Current GPA';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN COURSE_COMPLETION_RATE COMMENT 'Course completion percentage';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN INTERVENTION_COUNT COMMENT 'Number of interventions received';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ENGAGEMENT_PERFORMANCE_QUADRANT COMMENT 'Classification combining engagement and academic performance';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN ENGAGEMENT_CONCERN_LEVEL COMMENT 'Urgency classification for engagement-related concerns';
+ALTER VIEW sv_higher_education.vw_hed_engagement_analytics MODIFY COLUMN RECOMMENDED_ENGAGEMENT_ACTION COMMENT 'Specific recommended actions to improve or maintain engagement';
 
 CREATE OR REPLACE VIEW sv_higher_education.vw_hed_program_performance AS
 /*
@@ -2195,32 +2195,32 @@ select
 from ranked_programs
 order by program_health_score desc, total_students desc;
 COMMENT ON VIEW sv_higher_education.vw_hed_program_performance IS 'Academic program performance analysis aggregated by major, comparing enrollment, academic outcomes, retention rates, engagement, and overall program health. Includes rankings and quartile classifications.';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.MAJOR_CODE IS 'Academic major code';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.TOTAL_STUDENTS IS 'Number of students enrolled in this major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.ADVISORS_ASSIGNED IS 'Number of advisors supporting this major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_STUDENTS_PER_ADVISOR IS 'Average student-to-advisor ratio';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_GPA IS 'Average GPA for students in this major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_COMPLETION_RATE_PCT IS 'Average course completion rate';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_ASSIGNMENT_SCORE IS 'Average assignment performance';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.CREDIT_SUCCESS_RATE IS 'Percentage of attempted credits successfully earned';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AT_RISK_STUDENTS IS 'Number of at-risk students in this major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AT_RISK_PERCENTAGE IS 'Percentage of students at retention risk';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.HIGH_ACHIEVERS IS 'Number of students on Dean''s List, Honor Roll, or similar';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.STUDENTS_ON_PROBATION IS 'Number of students on academic probation or warning';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.PROBATION_RATE IS 'Percentage of students on probation';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_ENGAGEMENT_SCORE IS 'Average engagement score for the major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_COURSE_VIEWS IS 'Average course material views';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.TOTAL_PLAGIARISM_INCIDENTS IS 'Total academic integrity violations';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_WRITING_QUALITY_SCORE IS 'Average writing quality score';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.TOTAL_INTERVENTIONS IS 'Total academic interventions';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_INTERVENTIONS_PER_STUDENT IS 'Average interventions per student';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.TOTAL_FINANCIAL_AID IS 'Total financial aid for this major';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.AVG_FINANCIAL_AID_PER_STUDENT IS 'Average financial aid per student';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.FINANCIAL_AID_COVERAGE_PCT IS 'Percentage of students receiving aid';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.PROGRAM_HEALTH_SCORE IS 'Composite score (0-100) combining GPA, completion, engagement, and retention';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.OVERALL_HEALTH_RANK IS 'Rank of this major''s overall health score';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.PERFORMANCE_QUARTILE IS 'Performance quartile (1=top, 4=bottom)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_program_performance.PERFORMANCE_CATEGORY IS 'Qualitative performance classification';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN MAJOR_CODE COMMENT 'Academic major code';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN TOTAL_STUDENTS COMMENT 'Number of students enrolled in this major';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN ADVISORS_ASSIGNED COMMENT 'Number of advisors supporting this major';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_STUDENTS_PER_ADVISOR COMMENT 'Average student-to-advisor ratio';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_GPA COMMENT 'Average GPA for students in this major';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_COMPLETION_RATE_PCT COMMENT 'Average course completion rate';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_ASSIGNMENT_SCORE COMMENT 'Average assignment performance';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN CREDIT_SUCCESS_RATE COMMENT 'Percentage of attempted credits successfully earned';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AT_RISK_STUDENTS COMMENT 'Number of at-risk students in this major';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AT_RISK_PERCENTAGE COMMENT 'Percentage of students at retention risk';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN HIGH_ACHIEVERS COMMENT 'Number of students on Dean''s List, Honor Roll, or similar';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN STUDENTS_ON_PROBATION COMMENT 'Number of students on academic probation or warning';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN PROBATION_RATE COMMENT 'Percentage of students on probation';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_ENGAGEMENT_SCORE COMMENT 'Average engagement score for the major';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_COURSE_VIEWS COMMENT 'Average course material views';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN TOTAL_PLAGIARISM_INCIDENTS COMMENT 'Total academic integrity violations';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_WRITING_QUALITY_SCORE COMMENT 'Average writing quality score';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN TOTAL_INTERVENTIONS COMMENT 'Total academic interventions';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_INTERVENTIONS_PER_STUDENT COMMENT 'Average interventions per student';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN TOTAL_FINANCIAL_AID COMMENT 'Total financial aid for this major';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN AVG_FINANCIAL_AID_PER_STUDENT COMMENT 'Average financial aid per student';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN FINANCIAL_AID_COVERAGE_PCT COMMENT 'Percentage of students receiving aid';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN PROGRAM_HEALTH_SCORE COMMENT 'Composite score (0-100) combining GPA, completion, engagement, and retention';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN OVERALL_HEALTH_RANK COMMENT 'Rank of this major''s overall health score';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN PERFORMANCE_QUARTILE COMMENT 'Performance quartile (1=top, 4=bottom)';
+ALTER VIEW sv_higher_education.vw_hed_program_performance MODIFY COLUMN PERFORMANCE_CATEGORY COMMENT 'Qualitative performance classification';
 
 CREATE OR REPLACE VIEW sv_higher_education.vw_hed_student_success_kpi AS
 /*
@@ -2300,29 +2300,29 @@ kpi_summary as (
 
 select * from kpi_summary;
 COMMENT ON VIEW sv_higher_education.vw_hed_student_success_kpi IS 'Executive-level KPI dashboard summarizing key student success metrics across enrollment, academic performance, engagement, financial aid, and interventions. Single-row summary view for dashboards and executive reporting.';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.TOTAL_STUDENTS IS 'Total count of unique students';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AT_RISK_STUDENTS IS 'Number of students flagged as at-risk for retention';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AT_RISK_PERCENTAGE IS 'Percentage of students at retention risk';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_GPA IS 'Average GPA across all students';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_COMPLETION_RATE_PCT IS 'Average course completion rate as percentage';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_ASSIGNMENT_SCORE IS 'Average assignment score across all students';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.CREDIT_HOUR_SUCCESS_RATE IS 'Percentage of attempted credit hours successfully earned';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_ENGAGEMENT_SCORE IS 'Average student engagement score (0-100)';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_COURSE_VIEWS IS 'Average number of course material views per student';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_ASSIGNMENTS_SUBMITTED IS 'Average number of assignments submitted per student';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_DISCUSSION_POSTS IS 'Average number of discussion posts per student';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.TOTAL_PLAGIARISM_INCIDENTS IS 'Total academic integrity violations across all students';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.STUDENTS_WITH_INCIDENTS_PCT IS 'Percentage of students with at least one plagiarism incident';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_WRITING_QUALITY_SCORE IS 'Average writing quality assessment score';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.TOTAL_FINANCIAL_AID IS 'Total financial aid distributed to all students';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_FINANCIAL_AID_PER_STUDENT IS 'Average financial aid amount per student';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.STUDENTS_RECEIVING_AID IS 'Number of students receiving financial aid';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.FINANCIAL_AID_COVERAGE_PCT IS 'Percentage of students receiving financial aid';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.TOTAL_INTERVENTIONS IS 'Total academic interventions/support sessions';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.AVG_INTERVENTIONS_PER_STUDENT IS 'Average number of interventions per student';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.STUDENTS_WITH_INTERVENTIONS IS 'Number of students who have received interventions';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.LAST_DATA_REFRESH IS 'Timestamp of most recent data update';
-COMMENT ON COLUMN sv_higher_education.vw_hed_student_success_kpi.REPORT_GENERATED_AT IS 'Timestamp when this view was queried';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN TOTAL_STUDENTS COMMENT 'Total count of unique students';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AT_RISK_STUDENTS COMMENT 'Number of students flagged as at-risk for retention';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AT_RISK_PERCENTAGE COMMENT 'Percentage of students at retention risk';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_GPA COMMENT 'Average GPA across all students';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_COMPLETION_RATE_PCT COMMENT 'Average course completion rate as percentage';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_ASSIGNMENT_SCORE COMMENT 'Average assignment score across all students';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN CREDIT_HOUR_SUCCESS_RATE COMMENT 'Percentage of attempted credit hours successfully earned';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_ENGAGEMENT_SCORE COMMENT 'Average student engagement score (0-100)';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_COURSE_VIEWS COMMENT 'Average number of course material views per student';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_ASSIGNMENTS_SUBMITTED COMMENT 'Average number of assignments submitted per student';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_DISCUSSION_POSTS COMMENT 'Average number of discussion posts per student';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN TOTAL_PLAGIARISM_INCIDENTS COMMENT 'Total academic integrity violations across all students';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN STUDENTS_WITH_INCIDENTS_PCT COMMENT 'Percentage of students with at least one plagiarism incident';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_WRITING_QUALITY_SCORE COMMENT 'Average writing quality assessment score';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN TOTAL_FINANCIAL_AID COMMENT 'Total financial aid distributed to all students';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_FINANCIAL_AID_PER_STUDENT COMMENT 'Average financial aid amount per student';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN STUDENTS_RECEIVING_AID COMMENT 'Number of students receiving financial aid';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN FINANCIAL_AID_COVERAGE_PCT COMMENT 'Percentage of students receiving financial aid';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN TOTAL_INTERVENTIONS COMMENT 'Total academic interventions/support sessions';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN AVG_INTERVENTIONS_PER_STUDENT COMMENT 'Average number of interventions per student';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN STUDENTS_WITH_INTERVENTIONS COMMENT 'Number of students who have received interventions';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN LAST_DATA_REFRESH COMMENT 'Timestamp of most recent data update';
+ALTER VIEW sv_higher_education.vw_hed_student_success_kpi MODIFY COLUMN REPORT_GENERATED_AT COMMENT 'Timestamp when this view was queried';
 
 -- seed: hed_records (from the repo's seeds/hed_records.csv; not used by any model)
 CREATE OR REPLACE TABLE prod_workshop_Jb_2d9662.hed_records (RECORD_ID NUMBER(38,0), STUDENT_ID TEXT, ENROLLMENT_DATE DATE, ACADEMIC_STANDING TEXT, CURRENT_GPA FLOAT, CREDIT_HOURS_ATTEMPTED NUMBER(38,0), CREDIT_HOURS_EARNED NUMBER(38,0), MAJOR_CODE TEXT, ADVISOR_ID TEXT, FINANCIAL_AID_AMOUNT NUMBER(38,2), LAST_LOGIN_DATE TIMESTAMP_NTZ, TOTAL_COURSE_VIEWS NUMBER(38,0), ASSIGNMENT_SUBMISSIONS NUMBER(38,0), DISCUSSION_POSTS NUMBER(38,0), AVG_ASSIGNMENT_SCORE FLOAT, COURSE_COMPLETION_RATE FLOAT, PLAGIARISM_INCIDENTS NUMBER(38,0), WRITING_QUALITY_SCORE NUMBER(38,0), ENGAGEMENT_SCORE NUMBER(38,0), AT_RISK_FLAG BOOLEAN, INTERVENTION_COUNT NUMBER(38,0), LAST_UPDATED TIMESTAMP_NTZ);

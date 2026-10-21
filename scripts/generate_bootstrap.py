@@ -94,7 +94,7 @@ for k in order:
                 f"INSERT INTO {name} ({', '.join(c['name'] for c in ccols)}) VALUES",
                 ",\n".join("(" + ", ".join(lit(r[c["name"].lower()] or None, c["type"]) for c in ccols) + ")" for r in seed_rows) + ";", ""]
         continue
-    body = strip_db(n["compiled_code"]).strip()
+    body = strip_db(n["compiled_code"]).strip().rstrip(";").rstrip()
     if mat == "view":
         out.append(f"CREATE OR REPLACE VIEW {name} AS\n{body};")
     elif mat == "table":
@@ -110,7 +110,11 @@ for k in order:
             out.append(f"COMMENT ON {kind} {name} IS {q(cat['metadata']['comment'])};")
         for c in sorted(cat["columns"].values(), key=lambda c: c["index"]):
             if c.get("comment"):
-                out.append(f"COMMENT ON COLUMN {name}.{c['name']} IS {q(c['comment'])};")
+                # Views reject COMMENT ON COLUMN; they take ALTER VIEW ... MODIFY COLUMN.
+                if kind == "VIEW":
+                    out.append(f"ALTER VIEW {name} MODIFY COLUMN {c['name']} COMMENT {q(c['comment'])};")
+                else:
+                    out.append(f"COMMENT ON COLUMN {name}.{c['name']} IS {q(c['comment'])};")
     out.append("")
 
 Path(a.out).write_text("\n".join(out) + "\n")

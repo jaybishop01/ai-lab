@@ -53,7 +53,7 @@ print(f"nodes prod={len(pn)} test={len(tn)} | compiled SQL identical={same_sql} 
 
 if a.connection:
     import snowflake.connector
-    con = snowflake.connector.connect(connection_name=a.connection)
+    con = snowflake.connector.connect(connection_name=a.connection, **({'password': pw} if (pw := __import__('os').environ.get(f'SNOWFLAKE_CONNECTIONS_{a.connection.upper()}_PASSWORD')) else {}))
     cur = con.cursor()
     cur.execute(f"select table_schema, table_name, column_name, data_type from {a.test_db}.information_schema.columns "
                 "where table_schema <> 'INFORMATION_SCHEMA'")

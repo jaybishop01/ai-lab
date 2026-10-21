@@ -1,22 +1,31 @@
-# Make your data AI ready with dbt and Snowflake: environment bootstrap
+# Make your data AI ready with dbt and Snowflake: Snowflake lab bootstrap
 
-Recreates the workshop demo environment in a fresh Snowflake account.
-dbt project: https://github.com/dbt-labs/snowflake_sko_hol_2026 (`dbt_industries_views`, Higher Education models)
+One SQL file that recreates, in any Snowflake database, exactly what the workshop's dbt platform
+production job built: the `HED_RECORDS` source (750 rows), 13 views, the time spine table, the seed
+table, and the `sv_hed_at_risk_students` semantic view. No dbt needed on the Snowflake side.
 
-## What's here
+dbt project it mirrors: https://github.com/dbt-labs/snowflake_sko_hol_2026 (production run #520219493)
+
+## Use it
+- **Snowsight worksheet:** open `bootstrap.sql`, change `SET lab_db = ...` to your database, Run All (about 1 minute).
+- **Cortex Code:** paste `PROMPT.md`.
+
+Objects land in `<lab_db>.LUIS_LEON_HIGHER_EDUCATION` (source), `<lab_db>.sv_higher_education`
+(models and semantic view), and `<lab_db>.prod_workshop_Jb_2d9662` (seed, unused by models). Names match prod.
+
+## How it's made
 | File | Purpose |
 |---|---|
-| `sql/00_account_setup.sql` | Warehouse, role, database grants (ACCOUNTADMIN, one time) |
-| `sql/01_source_data.sql` | Creates `SNOWFLAKE_SUMMIT_2026_HOL_DB.LUIS_LEON_HIGHER_EDUCATION.HED_RECORDS` and loads 50 sample students |
-| `hed_records.csv` | Same data as a CSV (identical to the project's seed) |
+| `bootstrap.sql` | Generated. Do not hand-edit. |
+| `scripts/generate_bootstrap.py` | Builds `bootstrap.sql` from the prod run's `manifest.json` (compiled SQL) and `catalog.json` (types, comments), plus `data/hed_records_prod.json` |
+| `data/hed_records_prod.json` | The 750 prod source rows, exported from the production Snowflake through a read-only dbt platform run |
+| `scripts/verify_bootstrap.py` | Checks a bootstrapped database against the prod catalog: types, columns, comments, row counts, views run, semantic view exists |
+| `scripts/run_sql_file.py` | Runs `bootstrap.sql` through a named Snowflake connection |
+| `scripts/compare_to_prod.py`, `compare_state.py` | Earlier dbt-build comparison tools |
 
-## Steps
-1. Run `sql/00_account_setup.sql`, then `sql/01_source_data.sql` in a Snowflake worksheet.
-2. Clone the dbt project and point a profile at the account with role `WORKSHOP_TRANSFORMER`.
-3. `dbt deps && dbt build`. This produces what the prod job produces: staging, intermediate, 5 marts views, 4 data-quality models, the time spine, and the `sv_hed_at_risk_students` semantic view, all in schema `sv_higher_education`.
-4. To use different source names, run the SQL with `SET src_db=...; SET src_schema=...;` first, and build with `--vars '{hed_source_database: X, hed_source_schema: Y}'`.
+References are two-part (`schema.object`), so the `USE DATABASE` line decides where everything goes.
 
-## Notes
-- The semantic view needs the `Snowflake-Labs/dbt_semantic_view` package (in `packages.yml`) and Snowflake semantic views enabled on the account.
-- The project sets `static_analysis: strict`, so it needs the dbt engine (Fusion) in the target environment.
-- No credentials live in this repo.
+## Known limits
+- The catalog reports `NUMBER` without precision or scale. Scale is set from the data (e.g. GPA `NUMBER(38,2)`). Values match; the exact prod declared precision isn't verifiable from the artifacts.
+- `dq_hed__freshness` depends on the current time, so its output changes day to day, as it does in prod.
+- Needs Snowflake semantic views on the account.
